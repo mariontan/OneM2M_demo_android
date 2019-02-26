@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">OneM2M_demo</string>
+    <string name="title_activity_http_post_data">HTTP_post_data</string>
 </resources>
