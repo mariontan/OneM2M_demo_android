@@ -1,5 +1,8 @@
 package com.example.aic.onem2m_demo;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +18,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Random;
 
@@ -23,37 +27,44 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class MainActivity extends AppCompatActivity {
     //CSE Params
-    private static final String host = "http://127.0.0.1";
-
+    //public static final String host = "192.168.20.187";
+    public static final String host = "http://acctechstaging.southeastasia.cloudapp.azure.com:8080/";
     //AE Params
     private static final String origin = "Cae_device1";//Do not change Constant in oneM2M
     private static final int aePort = 80;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toast toast = new Toast(getApplicationContext());
+
+        checkInternet();
+
+        URL url = null;
+        HttpURLConnection httpConn = null;
         try{
-            URL url = new URL(host);
-            HttpURLConnection httpConn = (HttpURLConnection)url.openConnection();
+            //url = new URL("http",host, 8080,"");
+            url = new URL(host);
+            httpConn = (HttpURLConnection)url.openConnection();
+            httpConn.setRequestMethod("POST");
+            httpConn.setDoOutput(true);
+            Log.i("INFO",httpConn.getResponseMessage());
+
+            /*
             OutputStream out = new BufferedOutputStream(httpConn.getOutputStream());
-
             InputStream in = new BufferedInputStream(httpConn.getInputStream());
-            toast.makeText(getApplicationContext(),
-                    url.getHost(),
-                    Toast.LENGTH_LONG);
-
-            toast.show();
-            /*BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
             writer.write(data);
             writer.flush();
             writer.close();
             out.close();*/
             Log.i("INFO","connected");
-            httpConn.connect();
+
+            //httpConn.connect();
         }catch(Exception e){
-            Log.e("Error", e.getMessage());
+            Log.e("Error","Connection failed: " + e.getMessage());
         }
 
 
@@ -70,6 +81,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void checkInternet(){
+        ConnectivityManager check = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] info = check.getAllNetworkInfo();
+
+        for (int i = 0; i<info.length; i++){
+            if (info[i].getState() == NetworkInfo.State.CONNECTED){
+                Toast.makeText(getApplicationContext(), "Internet is connected",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
     private void Register(){
         String localIP = Utils.getIPAddress(true);
         // Create AE resource
