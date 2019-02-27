@@ -8,8 +8,8 @@ public class TestWifiClient implements iWifiClient{
     }
 
     @Override
-    public int available() {
-        return 0;
+    public boolean available() {
+        return true;
     }
 
     @Override
