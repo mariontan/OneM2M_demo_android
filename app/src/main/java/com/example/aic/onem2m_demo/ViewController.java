@@ -7,9 +7,10 @@ import android.widget.EditText;
 public class ViewController {
     public EditText name;
     public Button agriculture, aquaculture, telemed, smartHome, disaster;
+    public Button dGPS;
 
-    public ViewController(Activity activity){
-        initializeButton(activity);
+    public ViewController(){
+
     }
 
     public void initializeButton(Activity activity){
@@ -22,6 +23,10 @@ public class ViewController {
 
     public void intializeEditText(Activity activity){
         name = (EditText) activity.findViewById(R.id.ID_name);
+    }
+
+    public void initializeDisasterButton(Activity activity){
+        dGPS = (Button) activity.findViewById(R.id.gps);
     }
 
 }

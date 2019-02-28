@@ -46,16 +46,18 @@ public class MainActivity extends AppCompatActivity {
         checkInternet();
         DataController dataController = new DataController();
         dataController.sendToServer("/server",2,"{\"m2m:ae\":{\"rn\":\"mydevice9\",\"api\":\"mydevice9.company.com\",\"rr\":\"true\",\"poa\":[\"http://"+Utils.getIPAddress(true)+":80\"]}}");
-        dataController.sendToServer("/server/mydevice9",3,"{\"m2m:cnt\":{\"rn\":\"luminosity\"}}");
+        /*dataController.sendToServer("/server/mydevice9",3,"{\"m2m:cnt\":{\"rn\":\"luminosity\"}}");
         dataController.sendToServer("/server/mydevice9/luminosity",4,"{\"m2m:cin\":{\"con\":\"0\"}}");
         dataController.sendToServer("/server/mydevice9",3,"{\"m2m:cnt\":{\"rn\":\"led\"}}");
         dataController.sendToServer("/server/mydevice9/led",4,"{\"m2m:cin\":{\"con\":\"OFF\"}}");
-        dataController.sendToServer("/server/mydevice9/led",23,"{\"m2m:sub\":{\"rn\":\"led_sub\",\"nu\":[\"Cae_device9\"],\"nct\":1}}");
+        dataController.sendToServer("/server/mydevice9/led",23,"{\"m2m:sub\":{\"rn\":\"led_sub\",\"nu\":[\"Cae_device9\"],\"nct\":1}}");*/
     }
 
     private void buttons(){
+
         final Context MainAct = MainActivity.this;
-        ViewController buttons = new ViewController(this);
+        ViewController buttons = new ViewController();
+        buttons.initializeButton(this);
         buttons.agriculture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

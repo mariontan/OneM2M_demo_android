@@ -19,8 +19,8 @@ public class DataController {
     private static final String origin = "Cae_device9";//Do not change Constant in oneM2M
     private static final int aePort = 3000;
 
-    protected void sendToServer(final String location, final int ty, final String rep){
-        new Thread(){
+    protected void sendToServer (final String location, final int ty, final String rep){
+         new Thread(){
             public void run() {
                 URL url = null;
                 try{
