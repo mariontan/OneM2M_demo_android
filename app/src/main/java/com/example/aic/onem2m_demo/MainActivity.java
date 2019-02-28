@@ -31,10 +31,10 @@ import javax.net.ssl.HttpsURLConnection;
 public class MainActivity extends AppCompatActivity {
     //CSE Params
     //public static final String host = "http://192.168.20.187:8080";
-    private static final String host = "http://acctechstaging.southeastasia.cloudapp.azure.com:8080";
+    //private static final String host = "http://acctechstaging.southeastasia.cloudapp.azure.com:8080";
     //AE Params
-    private static final String origin = "Cae_device9";//Do not change Constant in oneM2M
-    private static final int aePort = 3000;
+    //private static final String origin = "Cae_device9";//Do not change Constant in oneM2M
+    //private static final int aePort = 3000;
 
 
 
@@ -44,7 +44,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         buttons();
         checkInternet();
-        connectToServer();
+        DataController dataController = new DataController();
+        //String rep = "{\"m2m:ae\":{\"rn\":\"mydevice9\",\"api\":\"mydevice9.company.com\",\"rr\":\"true\",\"poa\":[\"http://"+Utils.getIPAddress(true)+":"+aePort+"\"]}}";
+        String rep = "{\"m2m:cnt\":{\"rn\":\"aquaculture\"}}";
+
+        dataController.sendToServer("/server/mydevice9",3,rep);
 
     }
 
@@ -101,13 +105,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void connectToServer(){
+    /*private void sendToServer(final String location, final int ty, final String rep){
         new Thread(){
             public void run() {
                 URL url = null;
                 try{
-                    //url = new URL("http",host, 8080,"");
-                    url = new URL(host);
+                    url = new URL(host+location);
                     URLConnection urlConn = url.openConnection();
 
                     if (!(urlConn instanceof HttpURLConnection)) {
@@ -115,27 +118,12 @@ public class MainActivity extends AppCompatActivity {
                     }
                     HttpURLConnection httpConn = (HttpURLConnection) urlConn;
                     httpConn.setRequestMethod("POST");
-                    httpConn.setRequestProperty("Content-Type", "application/json;ty=2");
-                    //httpConn.setRequestProperty("Content-Length", "" + postData.getBytes().length);
                     httpConn.setRequestProperty("X-M2M-Origin", origin);
+                    httpConn.setRequestProperty("Content-Type", "application/json;ty="+String.valueOf(ty));
                     httpConn.setDoOutput(true);
                     httpConn.setChunkedStreamingMode(0);
-                    String localIP = Utils.getIPAddress(true);
-
-                    //simulate sending
-                    String location = "";//"http://acctechstaging.southeastasia.cloudapp.azure.com:8080";
-                    String rep = "{\"m2m:ae\":{\"rn\":\"mydevice9\",\"api\":\"mydevice9.company.com\",\"rr\":\"true\",\"poa\":[\"http://"+localIP+":"+aePort+"\"]}}";
-
-                    String req = "POST " + location + " HTTP/1.1\r\n" +
-                            "Host: " + host + "\r\n" +
-                            "X-M2M-Origin: " + origin + "\r\n" +
-                            "Content-Type: application/json;ty="+2+"\r\n" +
-                            "Content-Length: "+ rep.length()+"\r\n"+
-                            //"Connection: close\r\n\n" +
-                            rep;
                     //sending to server
                     OutputStream out = new BufferedOutputStream(httpConn.getOutputStream());
-                    //InputStream in = new BufferedInputStream(httpConn.getInputStream());
                     BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
                     writer.write(rep);
                     writer.flush();
@@ -146,18 +134,20 @@ public class MainActivity extends AppCompatActivity {
                     Log.i("INFO","connected: "+url.getHost());
                     Log.i("INFO","Response message " + httpConn.getResponseMessage());
                     Log.i("INFO", "Response Code " + String.valueOf(httpConn.getResponseCode()));
-                    //Log.i("INFO","Response message " + httpConn.get());
-                    Log.i("INFO", localIP);
                 }catch(Exception e){
                     Log.i("INFO","Connection failed: " +url +" "+ e.getMessage());
                 }
             }
         }.start();
-    }
+
+    }*/
     private void Register(){
         String localIP = Utils.getIPAddress(true);
         // Create AE resource
-        String resulat = Send("/server",2,"{\"m2m:ae\":{\"rn\":\"mydevice1\",\"api\":\"mydevice1.company.com\",\"rr\":\"true\",\"poa\":[\"http://"+localIP+":"+aePort+"\"]}}");
+        //String resulat = Send("/server",2,"{\"m2m:ae\":{\"rn\":\"mydevice1\",\"api\":\"mydevice1.company.com\",\"rr\":\"true\",\"poa\":[\"http://"+localIP+":"+aePort+"\"]}}");
+        String resulat="";
+        //String rep = "{\"m2m:ae\":{\"rn\":\"mydevice9\",\"api\":\"mydevice9.company.com\",\"rr\":\"true\",\"poa\":[\"http://"+Utils.getIPAddress(true)+":"+aePort+"\"]}}";
+        //connectToServer(rep);
         Log.i("IP Address",localIP);
         if(resulat=="HTTP/1.1 201 Created"){
             // Create Container resource
@@ -185,13 +175,13 @@ public class MainActivity extends AppCompatActivity {
         // url = name of the device
         // rep = sensor data
         // prepare the HTTP request
-        String req = "POST " + url + " HTTP/1.1\r\n" +
+        /*String req = "POST " + url + " HTTP/1.1\r\n" +
                 "Host: " + host + "\r\n" +
                 "X-M2M-Origin: " + origin + "\r\n" +
                 "Content-Type: application/json;ty="+ty+"\r\n" +
                 "Content-Length: "+ rep.length()+"\r\n"+
                 "Connection: close\r\n\n" +
-                rep;
+                rep;*/
 
         /***************send the http request here*************/
 
