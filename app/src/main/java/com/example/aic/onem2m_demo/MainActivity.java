@@ -14,12 +14,14 @@ import android.widget.Toast;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.Random;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -27,45 +29,56 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class MainActivity extends AppCompatActivity {
     //CSE Params
-    //public static final String host = "192.168.20.187";
-    public static final String host = "http://acctechstaging.southeastasia.cloudapp.azure.com:8080/";
+    public static final String host = "http://192.168.20.187:8080";
+    //private static final String host = "http://acctechstaging.southeastasia.cloudapp.azure.com:8080";
     //AE Params
     private static final String origin = "Cae_device1";//Do not change Constant in oneM2M
     private static final int aePort = 80;
 
+    String link = "http://www.google.com";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toast toast = new Toast(getApplicationContext());
-
         checkInternet();
 
-        URL url = null;
-        HttpURLConnection httpConn = null;
-        try{
-            //url = new URL("http",host, 8080,"");
-            url = new URL(host);
-            httpConn = (HttpURLConnection)url.openConnection();
-            httpConn.setRequestMethod("POST");
-            httpConn.setDoOutput(true);
-            Log.i("INFO",httpConn.getResponseMessage());
+        new Thread(){
+            public void run() {
+                URL url = null;
+                try{
+                    //url = new URL("http",host, 8080,"");
+                    url = new URL(host);
+                    URLConnection urlConn = url.openConnection();
 
-            /*
-            OutputStream out = new BufferedOutputStream(httpConn.getOutputStream());
-            InputStream in = new BufferedInputStream(httpConn.getInputStream());
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
-            writer.write(data);
-            writer.flush();
-            writer.close();
-            out.close();*/
-            Log.i("INFO","connected");
+                    if (!(urlConn instanceof HttpURLConnection)) {
+                        throw new IOException("URL is not an Http URL");
+                    }
+                    HttpURLConnection httpConn = (HttpURLConnection) urlConn;
+                    httpConn.setRequestMethod("GET");
+                    httpConn.connect();
 
-            //httpConn.connect();
-        }catch(Exception e){
-            Log.e("Error","Connection failed: " + e.getMessage());
-        }
+                    //httpConn.setDoOutput(true);
+                    Log.i("INFO","Response message " + httpConn.getResponseMessage());
+                    Log.i("INFO","connected: "+url.getHost());
+                    /*
+                    OutputStream out = new BufferedOutputStream(httpConn.getOutputStream());
+                    InputStream in = new BufferedInputStream(httpConn.getInputStream());
+                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
+                    writer.write(data);
+                    writer.flush();
+                    writer.close();
+                    out.close();*/
+
+
+                }catch(Exception e){
+                    Log.i("INFO","Connection failed: " +url +" "+ e.getMessage());
+                }
+            }
+        }.start();
+
+
 
 
         //conflict with iWifiClient displays only blank screen
