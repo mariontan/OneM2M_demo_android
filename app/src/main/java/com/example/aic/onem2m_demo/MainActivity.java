@@ -30,11 +30,11 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class MainActivity extends AppCompatActivity {
     //CSE Params
-    public static final String host = "http://192.168.20.187:8080";
-    //private static final String host = "http://acctechstaging.southeastasia.cloudapp.azure.com:8080";
+    //public static final String host = "http://192.168.20.187:8080";
+    private static final String host = "http://acctechstaging.southeastasia.cloudapp.azure.com:8080";
     //AE Params
-    private static final String origin = "Cae_device1";//Do not change Constant in oneM2M
-    private static final int aePort = 8080;
+    private static final String origin = "Cae_device9";//Do not change Constant in oneM2M
+    private static final int aePort = 3000;
 
 
 
@@ -43,9 +43,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         buttons();
-
         checkInternet();
         connectToServer();
+
     }
 
     private void buttons(){
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(context, clas);
         startActivity(intent);
     }
-    
+
     private void checkInternet(){
         ConnectivityManager check = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo[] info = check.getAllNetworkInfo();
@@ -115,20 +115,25 @@ public class MainActivity extends AppCompatActivity {
                     }
                     HttpURLConnection httpConn = (HttpURLConnection) urlConn;
                     httpConn.setRequestMethod("POST");
-
+                    httpConn.setRequestProperty("Content-Type", "application/json;ty=2");
+                    //httpConn.setRequestProperty("Content-Length", "" + postData.getBytes().length);
+                    httpConn.setRequestProperty("X-M2M-Origin", origin);
+                    httpConn.setDoOutput(true);
+                    httpConn.setChunkedStreamingMode(0);
                     String localIP = Utils.getIPAddress(true);
-                    //httpConn.setDoOutput(true);
+
                     //simulate sending
-                    String location = "/server";
-                    String rep = "{\"m2m:ae\":{\"rn\":\"mydevice1\",\"api\":\"mydevice1.company.com\",\"rr\":\"true\",\"poa\":[\"http://"+localIP+":"+aePort+"\"]}}";
+                    String location = "";//"http://acctechstaging.southeastasia.cloudapp.azure.com:8080";
+                    String rep = "{\"m2m:ae\":{\"rn\":\"mydevice9\",\"api\":\"mydevice9.company.com\",\"rr\":\"true\",\"poa\":[\"http://"+localIP+":"+aePort+"\"]}}";
+
                     String req = "POST " + location + " HTTP/1.1\r\n" +
                             "Host: " + host + "\r\n" +
                             "X-M2M-Origin: " + origin + "\r\n" +
                             "Content-Type: application/json;ty="+2+"\r\n" +
                             "Content-Length: "+ rep.length()+"\r\n"+
-                            "Connection: close\r\n\n" +
+                            //"Connection: close\r\n\n" +
                             rep;
-
+                    //sending to server
                     OutputStream out = new BufferedOutputStream(httpConn.getOutputStream());
                     //InputStream in = new BufferedInputStream(httpConn.getInputStream());
                     BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
@@ -141,6 +146,8 @@ public class MainActivity extends AppCompatActivity {
                     Log.i("INFO","connected: "+url.getHost());
                     Log.i("INFO","Response message " + httpConn.getResponseMessage());
                     Log.i("INFO", "Response Code " + String.valueOf(httpConn.getResponseCode()));
+                    //Log.i("INFO","Response message " + httpConn.get());
+                    Log.i("INFO", localIP);
                 }catch(Exception e){
                     Log.i("INFO","Connection failed: " +url +" "+ e.getMessage());
                 }
