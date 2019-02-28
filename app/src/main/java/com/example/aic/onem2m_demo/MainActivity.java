@@ -1,6 +1,7 @@
 package com.example.aic.onem2m_demo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
@@ -33,17 +34,74 @@ public class MainActivity extends AppCompatActivity {
     //private static final String host = "http://acctechstaging.southeastasia.cloudapp.azure.com:8080";
     //AE Params
     private static final String origin = "Cae_device1";//Do not change Constant in oneM2M
-    private static final int aePort = 80;
+    private static final int aePort = 8080;
 
-    String link = "http://www.google.com";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toast toast = new Toast(getApplicationContext());
-        checkInternet();
+        buttons();
 
+        checkInternet();
+        connectToServer();
+    }
+
+    private void buttons(){
+        final Context MainAct = MainActivity.this;
+        ViewController buttons = new ViewController(this);
+        buttons.agriculture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intentStarter(MainAct,Agriculture.class);
+            }
+        });
+        buttons.aquaculture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intentStarter(MainAct,Aquaculture.class);
+            }
+        });
+        buttons.telemed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intentStarter(MainAct, Telemed.class);
+            }
+        });
+        buttons.smartHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intentStarter(MainAct,SmartHome.class);
+            }
+        });
+        buttons.disaster.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intentStarter(MainAct, Disaster.class);
+            }
+        });
+
+    }
+
+    private void intentStarter(Context context, Class clas){
+        Intent intent = new Intent(context, clas);
+        startActivity(intent);
+    }
+    
+    private void checkInternet(){
+        ConnectivityManager check = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] info = check.getAllNetworkInfo();
+
+        for (int i = 0; i<info.length; i++){
+            if (info[i].getState() == NetworkInfo.State.CONNECTED){
+                Toast.makeText(getApplicationContext(), "Internet is connected",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void connectToServer(){
         new Thread(){
             public void run() {
                 URL url = null;
@@ -56,54 +114,38 @@ public class MainActivity extends AppCompatActivity {
                         throw new IOException("URL is not an Http URL");
                     }
                     HttpURLConnection httpConn = (HttpURLConnection) urlConn;
-                    httpConn.setRequestMethod("GET");
-                    httpConn.connect();
+                    httpConn.setRequestMethod("POST");
 
+                    String localIP = Utils.getIPAddress(true);
                     //httpConn.setDoOutput(true);
-                    Log.i("INFO","Response message " + httpConn.getResponseMessage());
-                    Log.i("INFO","connected: "+url.getHost());
-                    /*
+                    //simulate sending
+                    String location = "/server";
+                    String rep = "{\"m2m:ae\":{\"rn\":\"mydevice1\",\"api\":\"mydevice1.company.com\",\"rr\":\"true\",\"poa\":[\"http://"+localIP+":"+aePort+"\"]}}";
+                    String req = "POST " + location + " HTTP/1.1\r\n" +
+                            "Host: " + host + "\r\n" +
+                            "X-M2M-Origin: " + origin + "\r\n" +
+                            "Content-Type: application/json;ty="+2+"\r\n" +
+                            "Content-Length: "+ rep.length()+"\r\n"+
+                            "Connection: close\r\n\n" +
+                            rep;
+
                     OutputStream out = new BufferedOutputStream(httpConn.getOutputStream());
-                    InputStream in = new BufferedInputStream(httpConn.getInputStream());
+                    //InputStream in = new BufferedInputStream(httpConn.getInputStream());
                     BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
-                    writer.write(data);
+                    writer.write(rep);
                     writer.flush();
                     writer.close();
-                    out.close();*/
+                    out.close();
+                    httpConn.connect();
 
-
+                    Log.i("INFO","connected: "+url.getHost());
+                    Log.i("INFO","Response message " + httpConn.getResponseMessage());
+                    Log.i("INFO", "Response Code " + String.valueOf(httpConn.getResponseCode()));
                 }catch(Exception e){
                     Log.i("INFO","Connection failed: " +url +" "+ e.getMessage());
                 }
             }
         }.start();
-
-
-
-
-        //conflict with iWifiClient displays only blank screen
-        EditText name = (EditText) findViewById(R.id.ID_name);
-        Button sensor1 = (Button) findViewById(R.id.Sensor1);
-        //Register();
-        sensor1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //pushes random sensor value to the server
-                Push();
-            }
-        });
-    }
-
-    private void checkInternet(){
-        ConnectivityManager check = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo[] info = check.getAllNetworkInfo();
-
-        for (int i = 0; i<info.length; i++){
-            if (info[i].getState() == NetworkInfo.State.CONNECTED){
-                Toast.makeText(getApplicationContext(), "Internet is connected",
-                        Toast.LENGTH_SHORT).show();
-            }
-        }
     }
     private void Register(){
         String localIP = Utils.getIPAddress(true);

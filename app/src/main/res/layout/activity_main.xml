@@ -14,15 +14,34 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/Sensor1"
+        android:id="@+id/agriculture"
         android:layout_below="@+id/ID_name"
-        android:text="Sensor1"/>
+        android:text="Agriculture"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/Sensor2"
-        android:layout_below="@+id/Sensor1"
-        android:text="Sensor2"/>
+        android:id="@+id/aquaculture"
+        android:layout_below="@+id/agriculture"
+        android:text="Aquaculture"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/telemed"
+        android:layout_below="@+id/aquaculture"
+        android:text="Telemed"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/smarthome"
+        android:layout_below="@+id/telemed"
+        android:text="Smart Home"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/disaster"
+        android:layout_below="@+id/smarthome"
+        android:text="Disaster"/>
+
 
 
 
