@@ -48,6 +48,7 @@ public class DataController {
                     Log.i("INFO","connected: "+url.getHost());
                     Log.i("INFO","Response message " + httpConn.getResponseMessage());
                     Log.i("INFO", "Response Code " + String.valueOf(httpConn.getResponseCode()));
+                    httpConn.disconnect();
                 }catch(Exception e){
                     Log.i("INFO","Connection failed: " +url +" "+ e.getMessage());
                 }

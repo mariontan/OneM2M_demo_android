@@ -45,11 +45,12 @@ public class MainActivity extends AppCompatActivity {
         buttons();
         checkInternet();
         DataController dataController = new DataController();
-        //String rep = "{\"m2m:ae\":{\"rn\":\"mydevice9\",\"api\":\"mydevice9.company.com\",\"rr\":\"true\",\"poa\":[\"http://"+Utils.getIPAddress(true)+":"+aePort+"\"]}}";
-        String rep = "{\"m2m:cnt\":{\"rn\":\"aquaculture\"}}";
-
-        dataController.sendToServer("/server/mydevice9",3,rep);
-
+        dataController.sendToServer("/server",2,"{\"m2m:ae\":{\"rn\":\"mydevice9\",\"api\":\"mydevice9.company.com\",\"rr\":\"true\",\"poa\":[\"http://"+Utils.getIPAddress(true)+":80\"]}}");
+        dataController.sendToServer("/server/mydevice9",3,"{\"m2m:cnt\":{\"rn\":\"luminosity\"}}");
+        dataController.sendToServer("/server/mydevice9/luminosity",4,"{\"m2m:cin\":{\"con\":\"0\"}}");
+        dataController.sendToServer("/server/mydevice9",3,"{\"m2m:cnt\":{\"rn\":\"led\"}}");
+        dataController.sendToServer("/server/mydevice9/led",4,"{\"m2m:cin\":{\"con\":\"OFF\"}}");
+        dataController.sendToServer("/server/mydevice9/led",23,"{\"m2m:sub\":{\"rn\":\"led_sub\",\"nu\":[\"Cae_device9\"],\"nct\":1}}");
     }
 
     private void buttons(){
@@ -105,42 +106,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /*private void sendToServer(final String location, final int ty, final String rep){
-        new Thread(){
-            public void run() {
-                URL url = null;
-                try{
-                    url = new URL(host+location);
-                    URLConnection urlConn = url.openConnection();
 
-                    if (!(urlConn instanceof HttpURLConnection)) {
-                        throw new IOException("URL is not an Http URL");
-                    }
-                    HttpURLConnection httpConn = (HttpURLConnection) urlConn;
-                    httpConn.setRequestMethod("POST");
-                    httpConn.setRequestProperty("X-M2M-Origin", origin);
-                    httpConn.setRequestProperty("Content-Type", "application/json;ty="+String.valueOf(ty));
-                    httpConn.setDoOutput(true);
-                    httpConn.setChunkedStreamingMode(0);
-                    //sending to server
-                    OutputStream out = new BufferedOutputStream(httpConn.getOutputStream());
-                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
-                    writer.write(rep);
-                    writer.flush();
-                    writer.close();
-                    out.close();
-                    httpConn.connect();
-
-                    Log.i("INFO","connected: "+url.getHost());
-                    Log.i("INFO","Response message " + httpConn.getResponseMessage());
-                    Log.i("INFO", "Response Code " + String.valueOf(httpConn.getResponseCode()));
-                }catch(Exception e){
-                    Log.i("INFO","Connection failed: " +url +" "+ e.getMessage());
-                }
-            }
-        }.start();
-
-    }*/
     private void Register(){
         String localIP = Utils.getIPAddress(true);
         // Create AE resource
