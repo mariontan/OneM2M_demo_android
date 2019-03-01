@@ -22,38 +22,42 @@ public class DataController {
     protected void sendToServer (final String location, final int ty, final String rep){
          new Thread(){
             public void run() {
-                URL url = null;
-                try{
-                    url = new URL(host+location);
-                    URLConnection urlConn = url.openConnection();
-
-                    if (!(urlConn instanceof HttpURLConnection)) {
-                        throw new IOException("URL is not an Http URL");
-                    }
-                    HttpURLConnection httpConn = (HttpURLConnection) urlConn;
-                    httpConn.setRequestMethod("POST");
-                    httpConn.setRequestProperty("X-M2M-Origin", origin);
-                    httpConn.setRequestProperty("Content-Type", "application/json;ty="+String.valueOf(ty));
-                    httpConn.setDoOutput(true);
-                    httpConn.setChunkedStreamingMode(0);
-                    //sending to server
-                    OutputStream out = new BufferedOutputStream(httpConn.getOutputStream());
-                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
-                    writer.write(rep);
-                    writer.flush();
-                    writer.close();
-                    out.close();
-                    httpConn.connect();
-
-                    Log.i("INFO","connected: "+url.getHost());
-                    Log.i("INFO","Response message " + httpConn.getResponseMessage());
-                    Log.i("INFO", "Response Code " + String.valueOf(httpConn.getResponseCode()));
-                    httpConn.disconnect();
-                }catch(Exception e){
-                    Log.i("INFO","Connection failed: " +url +" "+ e.getMessage());
-                }
+                HttpPostServer(location,ty,rep);
             }
         }.start();
+    }
 
+
+    private void HttpPostServer(String location, int ty, String rep){
+        URL url = null;
+        try{
+            url = new URL(host+location);
+            URLConnection urlConn = url.openConnection();
+
+            if (!(urlConn instanceof HttpURLConnection)) {
+                throw new IOException("URL is not an Http URL");
+            }
+            HttpURLConnection httpConn = (HttpURLConnection) urlConn;
+            httpConn.setRequestMethod("POST");
+            httpConn.setRequestProperty("X-M2M-Origin", origin);
+            httpConn.setRequestProperty("Content-Type", "application/json;ty="+String.valueOf(ty));
+            httpConn.setDoOutput(true);
+            httpConn.setChunkedStreamingMode(0);
+            //sending to server
+            OutputStream out = new BufferedOutputStream(httpConn.getOutputStream());
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
+            writer.write(rep);
+            writer.flush();
+            writer.close();
+            out.close();
+            httpConn.connect();
+
+            Log.i("INFO","connected: "+url.getHost());
+            Log.i("INFO","Response message " + httpConn.getResponseMessage());
+            Log.i("INFO", "Response Code " + String.valueOf(httpConn.getResponseCode()));
+            httpConn.disconnect();
+        }catch(Exception e){
+            Log.i("INFO","Connection failed: " +url +" "+ e.getMessage());
+        }
     }
 }
