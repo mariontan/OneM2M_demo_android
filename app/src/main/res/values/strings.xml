@@ -6,4 +6,6 @@
     <string name="deviceDisasterRegFlag">com.example.aic.onem2m_demo.deviceDisasterRegFlag</string>
     <string name="deviceAgriRegFlag">com.example.aic.onem2m_demo.deviceAgriRegFlag</string>
     <string name="deviceAquaRegFlag">com.example.aic.onem2m_demo.deviceAguaRegFlag.</string>
+    <string name="deviceTeleRegFlag">com.example.aic.onem2m_demo.deviceTeleRegFlag.</string>
+    <string name="deviceSmrtRegFlag">com.example.aic.onem2m_demo.deviceSmrtRegFlag.</string>
 </resources>

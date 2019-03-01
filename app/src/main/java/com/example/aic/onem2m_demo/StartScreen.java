@@ -21,7 +21,10 @@ public class StartScreen extends AppCompatActivity {
         elements.start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setDeviceName();
+                String regFlag = sp.getString(getString(R.string.deviceRegFlag),"");
+                if(!regFlag.equals("Registered")){
+                    setDeviceName();
+                }
                 Intent intent = new Intent(StartScreen.this,MainActivity.class);
                 startActivity(intent);
             }
@@ -34,12 +37,14 @@ public class StartScreen extends AppCompatActivity {
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(getString(R.string.deviceID),deviceID);
         editor.commit();
-        //resets the disable flags
+        //resets the disable flags remove for final version
         if(!deviceID.equals(oldID)){
             editor.putString(getString(R.string.deviceRegFlag),"");
             editor.putString(getString(R.string.deviceDisasterRegFlag),"");
             editor.putString(getString(R.string.deviceAgriRegFlag),"");
             editor.putString(getString(R.string.deviceAquaRegFlag),"");
+            editor.putString(getString(R.string.deviceTeleRegFlag),"");
+            editor.putString(getString(R.string.deviceSmrtRegFlag),"");
             editor.commit();
         }
     }

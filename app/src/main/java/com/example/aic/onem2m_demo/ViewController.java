@@ -11,6 +11,8 @@ public class ViewController {
     public Button dGPS;
     public Button agrMoist;
     public Button aquaDO;
+    public Button teleECG;
+    public Button smrtTemp;
 
     public ViewController(){
 
@@ -38,6 +40,13 @@ public class ViewController {
         aquaDO = (Button) activity.findViewById(R.id.DO);
     }
 
+    public void initializeTeleButton(Activity activity){
+        teleECG = (Button) activity.findViewById(R.id.ecg);
+    }
+
+    public void initializeSmrtButton(Activity activity){
+        smrtTemp = (Button) activity.findViewById(R.id.temp);
+    }
     public void initializeDisasterButton(Activity activity){
         dGPS = (Button) activity.findViewById(R.id.gps);
     }
