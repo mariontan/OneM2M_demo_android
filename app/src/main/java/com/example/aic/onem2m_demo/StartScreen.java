@@ -38,6 +38,7 @@ public class StartScreen extends AppCompatActivity {
         if(!deviceID.equals(oldID)){
             editor.putString(getString(R.string.deviceRegFlag),"");
             editor.putString(getString(R.string.deviceDisasterRegFlag),"");
+            editor.putString(getString(R.string.deviceAgriRegFlag),"");
             editor.commit();
         }
     }

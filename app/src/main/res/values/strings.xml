@@ -4,4 +4,5 @@
     <string name="deviceID">com.example.aic.onem2m_demo.device_ID</string>
     <string name="deviceRegFlag">com.example.aic.onem2m_demo.deviceRegFlag</string>
     <string name="deviceDisasterRegFlag">com.example.aic.onem2m_demo.deviceDisasterRegFlag</string>
+    <string name="deviceAgriRegFlag">com.example.aic.onem2m_demo.deviceAgriRegFlag</string>
 </resources>
