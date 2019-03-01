@@ -44,13 +44,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         buttons();
         checkInternet();
-        DataController dataController = new DataController();
-        dataController.sendToServer("/server",2,"{\"m2m:ae\":{\"rn\":\"mydevice9\",\"api\":\"mydevice9.company.com\",\"rr\":\"true\",\"poa\":[\"http://"+Utils.getIPAddress(true)+":80\"]}}");
-        /*dataController.sendToServer("/server/mydevice9",3,"{\"m2m:cnt\":{\"rn\":\"luminosity\"}}");
-        dataController.sendToServer("/server/mydevice9/luminosity",4,"{\"m2m:cin\":{\"con\":\"0\"}}");
-        dataController.sendToServer("/server/mydevice9",3,"{\"m2m:cnt\":{\"rn\":\"led\"}}");
-        dataController.sendToServer("/server/mydevice9/led",4,"{\"m2m:cin\":{\"con\":\"OFF\"}}");
-        dataController.sendToServer("/server/mydevice9/led",23,"{\"m2m:sub\":{\"rn\":\"led_sub\",\"nu\":[\"Cae_device9\"],\"nct\":1}}");*/
+        RegisterDevice();
+
+        //DataController dataController = new DataController();
+        //dataController.sendToServer("/server",2,"{\"m2m:ae\":{\"rn\":\"mydevice9\",\"api\":\"mydevice9.company.com\",\"rr\":\"true\",\"poa\":[\"http://"+Utils.getIPAddress(true)+":80\"]}}");
+        //dataController.sendToServer("/server",2,"{\"m2m:ae\":{\"rn\":\"mydevice10\",\"api\":\"mydevice10.company.com\",\"rr\":\"true\",\"poa\":[\"http://"+Utils.getIPAddress(true)+":80\"]}}");
+        //dataController.sendToServer("/server/mydevice9",3,"{\"m2m:cnt\":{\"rn\":\"luminosity\"}}");
+        //dataController.sendToServer("/server/mydevice9/luminosity",4,"{\"m2m:cin\":{\"con\":\"0\"}}");
+        //dataController.sendToServer("/server/mydevice9",3,"{\"m2m:cnt\":{\"rn\":\"led\"}}");
+        //dataController.sendToServer("/server/mydevice9/led",4,"{\"m2m:cin\":{\"con\":\"OFF\"}}");
+        //dataController.sendToServer("/server/mydevice9/led",23,"{\"m2m:sub\":{\"rn\":\"led_sub\",\"nu\":[\"Cae_device9\"],\"nct\":1}}");*/
     }
 
     private void buttons(){
@@ -108,6 +111,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void RegisterDevice(){
+        DataController dataController = new DataController();
+        dataController.sendToServer("/server",2,"{\"m2m:ae\":{\"rn\":\"mydevice11\",\"api\":\"mydevice11.company.com\",\"rr\":\"true\",\"poa\":[\"http://"+Utils.getIPAddress(true)+":80\"]}}","Cae_device11");
+    }
 
     private void Register(){
         String localIP = Utils.getIPAddress(true);
