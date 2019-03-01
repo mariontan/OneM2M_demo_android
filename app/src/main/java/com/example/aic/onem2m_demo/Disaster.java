@@ -11,14 +11,13 @@ public class Disaster extends AppCompatActivity {
     private ViewController button = new ViewController();
     private DataController dataController = new DataController();
     private SharedPreferences sp;
-    //
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_disaster);
         sp = PreferenceManager.getDefaultSharedPreferences(this);
         final String deviceID = sp.getString(getString(R.string.deviceID),"");
-        //register catergory under device
         categoryRegistration(deviceID);
         button.initializeDisasterButton(this);
         button.dGPS.setOnClickListener(new View.OnClickListener() {

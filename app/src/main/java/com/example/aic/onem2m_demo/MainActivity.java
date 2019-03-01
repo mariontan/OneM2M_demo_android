@@ -30,7 +30,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         checkInternet();
         sp = PreferenceManager.getDefaultSharedPreferences(this);
-        RegisterDevice();
+        String regFlag = sp.getString(getString(R.string.deviceRegFlag),"");
+        if(!regFlag.equals("Registered")){
+            RegisterDevice();
+        }
         buttons();
         //DataController dataController = new DataController();
         //dataController.sendToServer("/server",2,"{\"m2m:ae\":{\"rn\":\"mydevice9\",\"api\":\"mydevice9.company.com\",\"rr\":\"true\",\"poa\":[\"http://"+Utils.getIPAddress(true)+":80\"]}}");
@@ -100,8 +103,13 @@ public class MainActivity extends AppCompatActivity {
     private void RegisterDevice(){
         String deviceID = sp.getString(getString(R.string.deviceID),"");
         DataController dataController = new DataController();
-        String test = dataController.sendToServer("/server",2,"{\"m2m:ae\":{\"rn\":\""+deviceID+"\",\"api\":\""+deviceID+".company.com\",\"rr\":\"true\",\"poa\":[\"http://"+Utils.getIPAddress(true)+":80\"]}}","Cae_"+deviceID);
-        Log.i("INFO","test : "+test);
+        String msg = dataController.sendToServer("/server",2,"{\"m2m:ae\":{\"rn\":\""+deviceID+"\",\"api\":\""+deviceID+".company.com\",\"rr\":\"true\",\"poa\":[\"http://"+Utils.getIPAddress(true)+":80\"]}}","Cae_"+deviceID);
+        SharedPreferences.Editor editor = sp.edit();
+        if(msg.equals("Created")){
+            editor.putString(getString(R.string.deviceRegFlag),"Registered");
+            editor.commit();
+        }
+        Log.i("INFO","test : "+sp.getString(getString(R.string.deviceRegFlag),""));
     }
 
     private void Register(){
@@ -130,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //put http connection code inside, needs input and output stream
     private String Send(String url,int ty, String rep){
         iWifiClient client = new TestWifiClient();
 

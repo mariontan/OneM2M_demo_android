@@ -29,9 +29,14 @@ public class StartScreen extends AppCompatActivity {
     }
 
     private void setDeviceName(){
+        String oldID = sp.getString(getString(R.string.deviceID),"");
         String deviceID = elements.id.getText().toString();
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(getString(R.string.deviceID),deviceID);
         editor.commit();
+        if(!deviceID.equals(oldID)){
+            editor.putString(getString(R.string.deviceRegFlag),"");
+            editor.commit();
+        }
     }
 }
