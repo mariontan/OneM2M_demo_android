@@ -113,7 +113,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void RegisterDevice(){
         DataController dataController = new DataController();
-        dataController.sendToServer("/server",2,"{\"m2m:ae\":{\"rn\":\"mydevice11\",\"api\":\"mydevice11.company.com\",\"rr\":\"true\",\"poa\":[\"http://"+Utils.getIPAddress(true)+":80\"]}}","Cae_device11");
+        String test = dataController.sendToServer("/server",2,"{\"m2m:ae\":{\"rn\":\"mydevice11\",\"api\":\"mydevice11.company.com\",\"rr\":\"true\",\"poa\":[\"http://"+Utils.getIPAddress(true)+":80\"]}}","Cae_device11");
+        Log.i("INFO","test : "+test);
     }
 
     private void Register(){
