@@ -39,6 +39,7 @@ public class StartScreen extends AppCompatActivity {
             editor.putString(getString(R.string.deviceRegFlag),"");
             editor.putString(getString(R.string.deviceDisasterRegFlag),"");
             editor.putString(getString(R.string.deviceAgriRegFlag),"");
+            editor.putString(getString(R.string.deviceAquaRegFlag),"");
             editor.commit();
         }
     }
