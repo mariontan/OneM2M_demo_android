@@ -2,31 +2,17 @@ package com.example.aic.onem2m_demo;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.Random;
-
-import javax.net.ssl.HttpsURLConnection;
-
 
 public class MainActivity extends AppCompatActivity {
     //CSE Params
@@ -35,17 +21,17 @@ public class MainActivity extends AppCompatActivity {
     //AE Params
     //private static final String origin = "Cae_device9";//Do not change Constant in oneM2M
     //private static final int aePort = 3000;
-
+    private SharedPreferences sp;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        buttons();
         checkInternet();
+        sp = PreferenceManager.getDefaultSharedPreferences(this);
         RegisterDevice();
-
+        buttons();
         //DataController dataController = new DataController();
         //dataController.sendToServer("/server",2,"{\"m2m:ae\":{\"rn\":\"mydevice9\",\"api\":\"mydevice9.company.com\",\"rr\":\"true\",\"poa\":[\"http://"+Utils.getIPAddress(true)+":80\"]}}");
         //dataController.sendToServer("/server",2,"{\"m2m:ae\":{\"rn\":\"mydevice10\",\"api\":\"mydevice10.company.com\",\"rr\":\"true\",\"poa\":[\"http://"+Utils.getIPAddress(true)+":80\"]}}");
@@ -54,6 +40,18 @@ public class MainActivity extends AppCompatActivity {
         //dataController.sendToServer("/server/mydevice9",3,"{\"m2m:cnt\":{\"rn\":\"led\"}}");
         //dataController.sendToServer("/server/mydevice9/led",4,"{\"m2m:cin\":{\"con\":\"OFF\"}}");
         //dataController.sendToServer("/server/mydevice9/led",23,"{\"m2m:sub\":{\"rn\":\"led_sub\",\"nu\":[\"Cae_device9\"],\"nct\":1}}");*/
+    }
+
+    private void checkInternet(){
+        ConnectivityManager check = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] info = check.getAllNetworkInfo();
+
+        for (int i = 0; i<info.length; i++){
+            if (info[i].getState() == NetworkInfo.State.CONNECTED){
+                Toast.makeText(getApplicationContext(), "Internet is connected",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void buttons(){
@@ -99,21 +97,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void checkInternet(){
-        ConnectivityManager check = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo[] info = check.getAllNetworkInfo();
-
-        for (int i = 0; i<info.length; i++){
-            if (info[i].getState() == NetworkInfo.State.CONNECTED){
-                Toast.makeText(getApplicationContext(), "Internet is connected",
-                        Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
     private void RegisterDevice(){
+        String deviceID = sp.getString(getString(R.string.deviceID),"");
         DataController dataController = new DataController();
-        String test = dataController.sendToServer("/server",2,"{\"m2m:ae\":{\"rn\":\"mydevice11\",\"api\":\"mydevice11.company.com\",\"rr\":\"true\",\"poa\":[\"http://"+Utils.getIPAddress(true)+":80\"]}}","Cae_device11");
+        String test = dataController.sendToServer("/server",2,"{\"m2m:ae\":{\"rn\":\""+deviceID+"\",\"api\":\""+deviceID+".company.com\",\"rr\":\"true\",\"poa\":[\"http://"+Utils.getIPAddress(true)+":80\"]}}","Cae_"+deviceID);
         Log.i("INFO","test : "+test);
     }
 

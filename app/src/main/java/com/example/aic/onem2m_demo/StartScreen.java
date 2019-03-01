@@ -1,0 +1,37 @@
+package com.example.aic.onem2m_demo;
+
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+
+public class StartScreen extends AppCompatActivity {
+    private SharedPreferences sp;
+    ViewController elements = new ViewController();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_start_screen);
+        elements.intializeEditText(this);
+        sp = PreferenceManager.getDefaultSharedPreferences(this);
+        elements.initilizeStartButton(this);
+        elements.start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setDeviceName();
+                Intent intent = new Intent(StartScreen.this,MainActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void setDeviceName(){
+        String deviceID = elements.id.getText().toString();
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(getString(R.string.deviceID),deviceID);
+        editor.commit();
+    }
+}

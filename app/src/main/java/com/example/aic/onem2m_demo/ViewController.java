@@ -5,14 +5,17 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class ViewController {
-    public EditText name;
+    public EditText id;
+    public Button start;
     public Button agriculture, aquaculture, telemed, smartHome, disaster;
     public Button dGPS;
 
     public ViewController(){
 
     }
-
+    public void initilizeStartButton(Activity activity){
+        start = (Button) activity.findViewById(R.id.start);
+    }
     public void initializeButton(Activity activity){
         agriculture = (Button) activity.findViewById(R.id.agriculture);
         aquaculture = (Button) activity.findViewById(R.id.aquaculture);
@@ -22,7 +25,7 @@ public class ViewController {
     }
 
     public void intializeEditText(Activity activity){
-        name = (EditText) activity.findViewById(R.id.ID_name);
+        id = (EditText) activity.findViewById(R.id.ID_name);
     }
 
     public void initializeDisasterButton(Activity activity){
