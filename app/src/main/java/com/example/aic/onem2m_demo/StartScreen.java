@@ -34,8 +34,10 @@ public class StartScreen extends AppCompatActivity {
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(getString(R.string.deviceID),deviceID);
         editor.commit();
+        //resets the disable flags
         if(!deviceID.equals(oldID)){
             editor.putString(getString(R.string.deviceRegFlag),"");
+            editor.putString(getString(R.string.deviceDisasterRegFlag),"");
             editor.commit();
         }
     }

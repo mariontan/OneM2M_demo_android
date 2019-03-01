@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/instructions"
         android:layout_below="@id/ID_name"
-        android:text="Input the device name in the field above press start when done"/>
+        android:text="Input the device name in the field above press start when done, ONLY ENTER device name once"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -17,8 +17,11 @@ public class Disaster extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_disaster);
         sp = PreferenceManager.getDefaultSharedPreferences(this);
+        String regFlag = sp.getString(getString(R.string.deviceDisasterRegFlag),"");
         final String deviceID = sp.getString(getString(R.string.deviceID),"");
-        categoryRegistration(deviceID);
+        if(!regFlag.equals("Registered")){
+            categoryRegistration(deviceID);
+        }
         button.initializeDisasterButton(this);
         button.dGPS.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -29,9 +32,14 @@ public class Disaster extends AppCompatActivity {
     }
 
     private void categoryRegistration(String deviceID){
+        SharedPreferences.Editor editor = sp.edit();
         String msg = dataController.sendToServer("/server/"+deviceID,3,"{\"m2m:cnt\":{\"rn\":\"disaster\"}}","Cae_device"+deviceID);
         if(msg.equals("Created")){
             dataController.sendToServer("/server/"+deviceID+"/disaster",3,"{\"m2m:cnt\":{\"rn\":\"sensor1\"}}","Cae_device"+deviceID);
+            editor.putString(getString(R.string.deviceDisasterRegFlag),"Registered");
+            editor.commit();
         }
     }
 }
+
+
