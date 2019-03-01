@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import java.util.Random;
+
 public class SmartHome extends AppCompatActivity {
 
     private ViewController button = new ViewController();
@@ -14,6 +16,7 @@ public class SmartHome extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_smart_home);
         sp = PreferenceManager.getDefaultSharedPreferences(this);
@@ -26,7 +29,9 @@ public class SmartHome extends AppCompatActivity {
         button.smrtTemp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dataController.sendToServer("/server/"+deviceID+"/smarthome/temp",4,"{\"m2m:cin\":{\"con\":\"OFF\"}}","Cae_device"+deviceID);
+                Random rand = new Random();
+                int n = rand.nextInt(40);
+                dataController.sendToServer("/server/"+deviceID+"/smarthome/temp",4,"{\"m2m:cin\":{\"con\":\""+String.valueOf(n)+"\"}}","Cae_device"+deviceID);
             }
         });
     }
