@@ -38,7 +38,7 @@ public class StartScreen extends AppCompatActivity {
         editor.putString(getString(R.string.deviceID),deviceID);
         editor.commit();
         //resets the disable flags remove for final version
-        if(!deviceID.equals(oldID)){
+        /*if(!deviceID.equals(oldID)){
             editor.putString(getString(R.string.deviceRegFlag),"");
             editor.putString(getString(R.string.deviceDisasterRegFlag),"");
             editor.putString(getString(R.string.deviceAgriRegFlag),"");
@@ -46,6 +46,6 @@ public class StartScreen extends AppCompatActivity {
             editor.putString(getString(R.string.deviceTeleRegFlag),"");
             editor.putString(getString(R.string.deviceSmrtRegFlag),"");
             editor.commit();
-        }
+        }*/
     }
 }
