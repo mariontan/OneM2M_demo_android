@@ -22,7 +22,6 @@ public class DataController {
     //CSE Params
     public static final String host = "http://192.168.20.187:8080";
     //private static final String host = "http://acctechstaging.southeastasia.cloudapp.azure.com:8080";
-    private static final int aePort = 3000;
     /****https://stackoverflow.com/questions/9148899/returning-value-from-thread***///return values from threads
 
     protected void categoryRegistration(Activity activity,int id, String deviceID, SharedPreferences sp, String category, String[] sensors ){

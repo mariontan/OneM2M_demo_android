@@ -29,8 +29,6 @@ public class Disaster extends AppCompatActivity {
         dataController.buttonFunction(deviceID,category,button.dGas,sensors[1]);
         dataController.buttonFunction(deviceID,category,button.dRad,sensors[2]);
     }
-
-
 }
 
 
