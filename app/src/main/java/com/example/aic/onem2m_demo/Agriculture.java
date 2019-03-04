@@ -11,6 +11,7 @@ public class Agriculture extends AppCompatActivity {
     private ViewController button = new ViewController();
     private DataController dataController = new DataController();
     private SharedPreferences sp;
+    private String[] sensors = new String[]{"moisture","gas","humidity","temp"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +21,7 @@ public class Agriculture extends AppCompatActivity {
         String regFlag = sp.getString(getString(R.string.deviceAgriRegFlag),"");
         final String deviceID = sp.getString(getString(R.string.deviceID),"");
         if(!regFlag.equals("Registered")){
-            categoryRegistration(deviceID);
+            dataController.categoryRegistration(this, deviceID, sp,"agriculture", sensors);
         }
         button.intializeAgriButton(this);
         button.agrMoist.setOnClickListener(new View.OnClickListener() {
@@ -31,7 +32,7 @@ public class Agriculture extends AppCompatActivity {
         });
     }
 
-    private void categoryRegistration(String deviceID){
+    /*private void categoryRegistration(String deviceID){
         SharedPreferences.Editor editor = sp.edit();
         String msg = dataController.sendToServer("/server/"+deviceID,3,"{\"m2m:cnt\":{\"rn\":\"agriculture\"}}","Cae_device"+deviceID);
         if(msg.equals("Created")){
@@ -39,5 +40,5 @@ public class Agriculture extends AppCompatActivity {
             editor.putString(getString(R.string.deviceAgriRegFlag),"Registered");
             editor.commit();
         }
-    }
+    }*/
 }

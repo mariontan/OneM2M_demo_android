@@ -1,5 +1,7 @@
 package com.example.aic.onem2m_demo;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import java.io.BufferedOutputStream;
@@ -19,7 +21,6 @@ public class DataController {
     //AE Params
     //private static final String origin = "Cae_device10";//Do not change Constant in oneM2M
     private static final int aePort = 3000;
-    //String msg = "";
     /****https://stackoverflow.com/questions/9148899/returning-value-from-thread***///return values from threads
     protected String sendToServer(final String location, final int ty, final String rep,final String origin){
         final CountDownLatch latch = new CountDownLatch(1);
@@ -67,5 +68,26 @@ public class DataController {
         return msg[0];
     }
 
+    protected void categoryRegistration(Activity activity, String deviceID, SharedPreferences sp, String category, String[] sensors ){
+        SharedPreferences.Editor editor = sp.edit();
+        String msg = sendToServer("/server/"+deviceID,3,"{\"m2m:cnt\":{\"rn\":\""+category+"\"}}","Cae_device"+deviceID);
+        if(msg.equals("Created")){
+            for(String sensor: sensors){
+                sendToServer("/server/"+deviceID+"/"+category+"",3,"{\"m2m:cnt\":{\"rn\":\""+sensor+"\"}}","Cae_device"+deviceID);
+            }
+            editor.putString(activity.getString(R.string.deviceSmrtRegFlag),"Registered");
+            editor.commit();
+        }
+    }
+
+    /*private void categoryRegistration(String deviceID){
+        SharedPreferences.Editor editor = sp.edit();
+        String msg = dataController.sendToServer("/server/"+deviceID,3,"{\"m2m:cnt\":{\"rn\":\"smarthome\"}}","Cae_device"+deviceID);
+        if(msg.equals("Created")){
+            dataController.sendToServer("/server/"+deviceID+"/smarthome",3,"{\"m2m:cnt\":{\"rn\":\"temp\"}}","Cae_device"+deviceID);
+            editor.putString(getString(R.string.deviceSmrtRegFlag),"Registered");
+            editor.commit();
+        }
+    }*/
 
 }

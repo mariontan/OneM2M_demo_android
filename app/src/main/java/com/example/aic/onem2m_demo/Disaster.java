@@ -11,6 +11,7 @@ public class Disaster extends AppCompatActivity {
     private ViewController button = new ViewController();
     private DataController dataController = new DataController();
     private SharedPreferences sp;
+    private String[] sensors = new String[]{"GPS","gas","radiation"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +21,7 @@ public class Disaster extends AppCompatActivity {
         String regFlag = sp.getString(getString(R.string.deviceDisasterRegFlag),"");
         final String deviceID = sp.getString(getString(R.string.deviceID),"");
         if(!regFlag.equals("Registered")){
-            categoryRegistration(deviceID);
+            dataController.categoryRegistration(this,deviceID, sp, "disaster", sensors);
         }
         button.initializeDisasterButton(this);
         button.dGPS.setOnClickListener(new View.OnClickListener() {
@@ -31,7 +32,7 @@ public class Disaster extends AppCompatActivity {
         });
     }
 
-    private void categoryRegistration(String deviceID){
+    /*private void categoryRegistration(String deviceID){
         SharedPreferences.Editor editor = sp.edit();
         String msg = dataController.sendToServer("/server/"+deviceID,3,"{\"m2m:cnt\":{\"rn\":\"disaster\"}}","Cae_device"+deviceID);
         if(msg.equals("Created")){
@@ -39,7 +40,7 @@ public class Disaster extends AppCompatActivity {
             editor.putString(getString(R.string.deviceDisasterRegFlag),"Registered");
             editor.commit();
         }
-    }
+    }*/
 }
 
 

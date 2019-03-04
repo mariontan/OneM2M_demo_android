@@ -10,6 +10,7 @@ public class Aquaculture extends AppCompatActivity {
     private ViewController button = new ViewController();
     private DataController dataController = new DataController();
     private SharedPreferences sp;
+    private String[] sensors = new String[]{"DO","conductivity","ph","temp"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +20,7 @@ public class Aquaculture extends AppCompatActivity {
         String regFlag = sp.getString(getString(R.string.deviceAquaRegFlag),"");
         final String deviceID = sp.getString(getString(R.string.deviceID),"");
         if(!regFlag.equals("Registered")){
-            categoryRegistration(deviceID);
+            dataController.categoryRegistration(this, deviceID,sp, "aquaculture", sensors);
         }
         button.intializeAquaButton(this);
         button.aquaDO.setOnClickListener(new View.OnClickListener() {
@@ -30,7 +31,7 @@ public class Aquaculture extends AppCompatActivity {
         });
     }
 
-    private void categoryRegistration(String deviceID){
+    /*private void categoryRegistration(String deviceID){
         SharedPreferences.Editor editor = sp.edit();
         String msg = dataController.sendToServer("/server/"+deviceID,3,"{\"m2m:cnt\":{\"rn\":\"aquaculture\"}}","Cae_device"+deviceID);
         if(msg.equals("Created")){
@@ -38,5 +39,5 @@ public class Aquaculture extends AppCompatActivity {
             editor.putString(getString(R.string.deviceAquaRegFlag),"Registered");
             editor.commit();
         }
-    }
+    }*/
 }

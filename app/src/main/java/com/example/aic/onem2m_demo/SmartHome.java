@@ -13,6 +13,7 @@ public class SmartHome extends AppCompatActivity {
     private ViewController button = new ViewController();
     private DataController dataController = new DataController();
     private SharedPreferences sp;
+    private String[] sensors = new String[]{"temp","humidity"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +24,7 @@ public class SmartHome extends AppCompatActivity {
         String regFlag = sp.getString(getString(R.string.deviceSmrtRegFlag),"");
         final String deviceID = sp.getString(getString(R.string.deviceID),"");
         if(!regFlag.equals("Registered")){
-            categoryRegistration(deviceID);
+            dataController.categoryRegistration(this, deviceID,sp, "smarthome", sensors);
         }
         button.initializeSmrtButton(this);
         button.smrtTemp.setOnClickListener(new View.OnClickListener() {
@@ -36,7 +37,7 @@ public class SmartHome extends AppCompatActivity {
         });
     }
 
-    private void categoryRegistration(String deviceID){
+    /*private void categoryRegistration(String deviceID){
         SharedPreferences.Editor editor = sp.edit();
         String msg = dataController.sendToServer("/server/"+deviceID,3,"{\"m2m:cnt\":{\"rn\":\"smarthome\"}}","Cae_device"+deviceID);
         if(msg.equals("Created")){
@@ -44,5 +45,5 @@ public class SmartHome extends AppCompatActivity {
             editor.putString(getString(R.string.deviceSmrtRegFlag),"Registered");
             editor.commit();
         }
-    }
+    }*/
 }
