@@ -9,7 +9,25 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/DO"
+        android:id="@+id/aquaDO"
         android:text="Disolved Oxygen"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/aquaCon"
+        android:layout_below="@+id/aquaDO"
+        android:text="conductivity"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/aquaPH"
+        android:layout_below="@+id/aquaCon"
+        android:text="PH"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/aquaTemp"
+        android:layout_below="@+id/aquaPH"
+        android:text="temperature"/>
 
 </RelativeLayout>

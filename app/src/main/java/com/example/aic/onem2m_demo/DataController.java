@@ -27,6 +27,27 @@ public class DataController {
     private static final int aePort = 3000;
     private int i = 0;
     /****https://stackoverflow.com/questions/9148899/returning-value-from-thread***///return values from threads
+
+    protected void categoryRegistration(Activity activity,int id, String deviceID, SharedPreferences sp, String category, String[] sensors ){
+        SharedPreferences.Editor editor = sp.edit();
+        String msg = sendToServer("/server/"+deviceID,3,"{\"m2m:cnt\":{\"rn\":\""+category+"\"}}","Cae_device"+deviceID);
+        if(msg.equals("Created")){
+            for(String sensor: sensors){
+                sendToServer("/server/"+deviceID+"/"+category+"",3,"{\"m2m:cnt\":{\"rn\":\""+sensor+"\"}}","Cae_device"+deviceID);
+            }
+            editor.putString(activity.getString(id),"Registered");
+            editor.commit();
+        }
+    }
+
+    protected void buttonFunction(final String deviceID, final String category, Button button, final String sensor){
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    sendToServer("/server/"+deviceID+"/"+category+"/"+sensor,4,"{\"m2m:cin\":{\"con\":\""+dataGen()+"\"}}","Cae_device"+deviceID);
+                }
+            });
+    }
     protected String sendToServer(final String location, final int ty, final String rep,final String origin){
         final CountDownLatch latch = new CountDownLatch(1);
         final String[] msg = new String[1];
@@ -71,27 +92,6 @@ public class DataController {
             Log.i("INFO", "Thread issue: " + e.getMessage());
         }
         return msg[0];
-    }
-
-    protected void categoryRegistration(Activity activity,int id, String deviceID, SharedPreferences sp, String category, String[] sensors ){
-        SharedPreferences.Editor editor = sp.edit();
-        String msg = sendToServer("/server/"+deviceID,3,"{\"m2m:cnt\":{\"rn\":\""+category+"\"}}","Cae_device"+deviceID);
-        if(msg.equals("Created")){
-            for(String sensor: sensors){
-                sendToServer("/server/"+deviceID+"/"+category+"",3,"{\"m2m:cnt\":{\"rn\":\""+sensor+"\"}}","Cae_device"+deviceID);
-            }
-            editor.putString(activity.getString(id),"Registered");
-            editor.commit();
-        }
-    }
-
-    protected void buttonFunction(final String deviceID, final String category, Button button, final String sensor){
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    sendToServer("/server/"+deviceID+"/"+category+"/"+sensor,4,"{\"m2m:cin\":{\"con\":\""+dataGen()+"\"}}","Cae_device"+deviceID);
-                }
-            });
     }
 
     private String dataGen(){

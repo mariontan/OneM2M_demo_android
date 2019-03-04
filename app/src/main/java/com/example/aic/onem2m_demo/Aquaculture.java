@@ -11,7 +11,7 @@ public class Aquaculture extends AppCompatActivity {
     private DataController dataController = new DataController();
     private SharedPreferences sp;
     private String[] sensors = new String[]{"DO","conductivity","ph","temp"};
-
+    private String category = "aquaculture";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,15 +20,13 @@ public class Aquaculture extends AppCompatActivity {
         String regFlag = sp.getString(getString(R.string.deviceAquaRegFlag),"");
         final String deviceID = sp.getString(getString(R.string.deviceID),"");
         if(!regFlag.equals("Registered")){
-            dataController.categoryRegistration(this,R.string.deviceAquaRegFlag, deviceID,sp, "aquaculture", sensors);
+            dataController.categoryRegistration(this,R.string.deviceAquaRegFlag, deviceID,sp, category, sensors);
         }
         button.intializeAquaButton(this);
-        button.aquaDO.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dataController.sendToServer("/server/"+deviceID+"/aquaculture/DO",4,"{\"m2m:cin\":{\"con\":\"OFF\"}}","Cae_device"+deviceID);
-            }
-        });
+        dataController.buttonFunction(deviceID,category,button.aquaDO,sensors[0]);
+        dataController.buttonFunction(deviceID,category,button.aquaCon,sensors[1]);
+        dataController.buttonFunction(deviceID,category,button.aquaPH,sensors[2]);
+        dataController.buttonFunction(deviceID,category,button.aquaTemp,sensors[3]);
     }
 
     /*private void categoryRegistration(String deviceID){
