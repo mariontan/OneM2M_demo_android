@@ -15,14 +15,8 @@ import android.widget.Toast;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
-    //CSE Params
-    //public static final String host = "http://192.168.20.187:8080";
-    //private static final String host = "http://acctechstaging.southeastasia.cloudapp.azure.com:8080";
-    //AE Params
-    //private static final String origin = "Cae_device9";//Do not change Constant in oneM2M
-    //private static final int aePort = 3000;
-    private SharedPreferences sp;
 
+    private SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,14 +29,6 @@ public class MainActivity extends AppCompatActivity {
             RegisterDevice();
         }
         buttons();
-        //DataController dataController = new DataController();
-        //dataController.sendToServer("/server",2,"{\"m2m:ae\":{\"rn\":\"mydevice9\",\"api\":\"mydevice9.company.com\",\"rr\":\"true\",\"poa\":[\"http://"+Utils.getIPAddress(true)+":80\"]}}");
-        //dataController.sendToServer("/server",2,"{\"m2m:ae\":{\"rn\":\"mydevice10\",\"api\":\"mydevice10.company.com\",\"rr\":\"true\",\"poa\":[\"http://"+Utils.getIPAddress(true)+":80\"]}}");
-        //dataController.sendToServer("/server/mydevice9",3,"{\"m2m:cnt\":{\"rn\":\"luminosity\"}}");
-        //dataController.sendToServer("/server/mydevice9/luminosity",4,"{\"m2m:cin\":{\"con\":\"0\"}}");
-        //dataController.sendToServer("/server/mydevice9",3,"{\"m2m:cnt\":{\"rn\":\"led\"}}");
-        //dataController.sendToServer("/server/mydevice9/led",4,"{\"m2m:cin\":{\"con\":\"OFF\"}}");
-        //dataController.sendToServer("/server/mydevice9/led",23,"{\"m2m:sub\":{\"rn\":\"led_sub\",\"nu\":[\"Cae_device9\"],\"nct\":1}}");*/
     }
 
     private void checkInternet(){

@@ -57,6 +57,7 @@ public class ViewController {
         smrtTemp = (Button) activity.findViewById(R.id.smrttemp);
         smrtHum = (Button) activity.findViewById(R.id.smrtHum);
     }
+
     public void initializeDisasterButton(Activity activity){
         dGPS = (Button) activity.findViewById(R.id.gps);
         dGas = (Button) activity.findViewById(R.id.dGas);

@@ -30,15 +30,7 @@ public class Disaster extends AppCompatActivity {
         dataController.buttonFunction(deviceID,category,button.dRad,sensors[2]);
     }
 
-    /*private void categoryRegistration(String deviceID){
-        SharedPreferences.Editor editor = sp.edit();
-        String msg = dataController.sendToServer("/server/"+deviceID,3,"{\"m2m:cnt\":{\"rn\":\"disaster\"}}","Cae_device"+deviceID);
-        if(msg.equals("Created")){
-            dataController.sendToServer("/server/"+deviceID+"/disaster",3,"{\"m2m:cnt\":{\"rn\":\"sensor1\"}}","Cae_device"+deviceID);
-            editor.putString(getString(R.string.deviceDisasterRegFlag),"Registered");
-            editor.commit();
-        }
-    }*/
+
 }
 
 
