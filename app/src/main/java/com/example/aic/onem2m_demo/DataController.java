@@ -68,14 +68,14 @@ public class DataController {
         return msg[0];
     }
 
-    protected void categoryRegistration(Activity activity, String deviceID, SharedPreferences sp, String category, String[] sensors ){
+    protected void categoryRegistration(Activity activity,int id, String deviceID, SharedPreferences sp, String category, String[] sensors ){
         SharedPreferences.Editor editor = sp.edit();
         String msg = sendToServer("/server/"+deviceID,3,"{\"m2m:cnt\":{\"rn\":\""+category+"\"}}","Cae_device"+deviceID);
         if(msg.equals("Created")){
             for(String sensor: sensors){
                 sendToServer("/server/"+deviceID+"/"+category+"",3,"{\"m2m:cnt\":{\"rn\":\""+sensor+"\"}}","Cae_device"+deviceID);
             }
-            editor.putString(activity.getString(R.string.deviceSmrtRegFlag),"Registered");
+            editor.putString(activity.getString(id),"Registered");
             editor.commit();
         }
     }

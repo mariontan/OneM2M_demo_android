@@ -20,7 +20,7 @@ public class Telemed extends AppCompatActivity {
         String regFlag = sp.getString(getString(R.string.deviceTeleRegFlag),"");
         final String deviceID = sp.getString(getString(R.string.deviceID),"");
         if(!regFlag.equals("Registered")){
-            dataController.categoryRegistration(this, deviceID, sp,"telemed", sensors);
+            dataController.categoryRegistration(this,R.string.deviceTeleRegFlag, deviceID, sp,"telemed", sensors);
         }
         button.initializeTeleButton(this);
         button.teleECG.setOnClickListener(new View.OnClickListener() {

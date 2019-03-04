@@ -20,7 +20,7 @@ public class Aquaculture extends AppCompatActivity {
         String regFlag = sp.getString(getString(R.string.deviceAquaRegFlag),"");
         final String deviceID = sp.getString(getString(R.string.deviceID),"");
         if(!regFlag.equals("Registered")){
-            dataController.categoryRegistration(this, deviceID,sp, "aquaculture", sensors);
+            dataController.categoryRegistration(this,R.string.deviceAquaRegFlag, deviceID,sp, "aquaculture", sensors);
         }
         button.intializeAquaButton(this);
         button.aquaDO.setOnClickListener(new View.OnClickListener() {

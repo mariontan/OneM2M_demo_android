@@ -24,7 +24,7 @@ public class SmartHome extends AppCompatActivity {
         String regFlag = sp.getString(getString(R.string.deviceSmrtRegFlag),"");
         final String deviceID = sp.getString(getString(R.string.deviceID),"");
         if(!regFlag.equals("Registered")){
-            dataController.categoryRegistration(this, deviceID,sp, "smarthome", sensors);
+            dataController.categoryRegistration(this,R.string.deviceSmrtRegFlag, deviceID,sp, "smarthome", sensors);
         }
         button.initializeSmrtButton(this);
         button.smrtTemp.setOnClickListener(new View.OnClickListener() {

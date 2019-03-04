@@ -21,13 +21,13 @@ public class Disaster extends AppCompatActivity {
         String regFlag = sp.getString(getString(R.string.deviceDisasterRegFlag),"");
         final String deviceID = sp.getString(getString(R.string.deviceID),"");
         if(!regFlag.equals("Registered")){
-            dataController.categoryRegistration(this,deviceID, sp, "disaster", sensors);
+            dataController.categoryRegistration(this,R.string.deviceDisasterRegFlag,deviceID, sp, "disaster", sensors);
         }
         button.initializeDisasterButton(this);
         button.dGPS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dataController.sendToServer("/server/"+deviceID+"/disaster/sensor1",4,"{\"m2m:cin\":{\"con\":\"OFF\"}}","Cae_device"+deviceID);
+                dataController.sendToServer("/server/"+deviceID+"/disaster/GPS",4,"{\"m2m:cin\":{\"con\":\"OFF\"}}","Cae_device"+deviceID);
             }
         });
     }

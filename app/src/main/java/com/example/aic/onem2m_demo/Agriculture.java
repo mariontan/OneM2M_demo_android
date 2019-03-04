@@ -21,7 +21,7 @@ public class Agriculture extends AppCompatActivity {
         String regFlag = sp.getString(getString(R.string.deviceAgriRegFlag),"");
         final String deviceID = sp.getString(getString(R.string.deviceID),"");
         if(!regFlag.equals("Registered")){
-            dataController.categoryRegistration(this, deviceID, sp,"agriculture", sensors);
+            dataController.categoryRegistration(this,R.string.deviceAgriRegFlag, deviceID, sp,"agriculture", sensors);
         }
         button.intializeAgriButton(this);
         button.agrMoist.setOnClickListener(new View.OnClickListener() {
