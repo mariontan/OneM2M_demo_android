@@ -8,11 +8,11 @@ public class ViewController {
     public EditText id;
     public Button start;
     public Button agriculture, aquaculture, telemed, smartHome, disaster;
-    public Button dGPS;
     public Button agrMoist,agrGas,agrHum,agrTemp;
     public Button aquaDO,aquaCon,aquaPH,aquaTemp;
-    public Button teleECG;
+    public Button teleECG,teleEMG,teleTemp, teleSugar;
     public Button smrtTemp,smrtHum;
+    public Button dGPS,dGas,dRad;
 
     public ViewController(){
 
@@ -47,7 +47,10 @@ public class ViewController {
     }
 
     public void initializeTeleButton(Activity activity){
-        teleECG = (Button) activity.findViewById(R.id.ecg);
+        teleECG = (Button) activity.findViewById(R.id.teleecg);
+        teleEMG = (Button) activity.findViewById(R.id.teleemg);
+        teleTemp = (Button) activity.findViewById(R.id.teletemp);
+        teleSugar =(Button) activity.findViewById(R.id.telesugar);
     }
 
     public void initializeSmrtButton(Activity activity){
@@ -56,6 +59,8 @@ public class ViewController {
     }
     public void initializeDisasterButton(Activity activity){
         dGPS = (Button) activity.findViewById(R.id.gps);
+        dGas = (Button) activity.findViewById(R.id.dGas);
+        dRad = (Button) activity.findViewById(R.id.dRaditation);
     }
 
 

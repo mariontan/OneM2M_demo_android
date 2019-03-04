@@ -8,7 +8,25 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/ecg"
+        android:id="@+id/teleecg"
         android:text="ECG"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/teleemg"
+        android:layout_below="@+id/teleecg"
+        android:text="EMG"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/teletemp"
+        android:layout_below="@+id/teleemg"
+        android:text="temperature"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/telesugar"
+        android:layout_below="@+id/teletemp"
+        android:text="Blood Sugar"/>
 
 </RelativeLayout>

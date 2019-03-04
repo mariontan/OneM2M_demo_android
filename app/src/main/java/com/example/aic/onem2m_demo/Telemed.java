@@ -11,6 +11,7 @@ public class Telemed extends AppCompatActivity {
     private DataController dataController = new DataController();
     private SharedPreferences sp;
     private String[] sensors = new String[]{"ECG","EMG","temp","bloodsugar"};
+    private String category = "telemed";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,15 +21,13 @@ public class Telemed extends AppCompatActivity {
         String regFlag = sp.getString(getString(R.string.deviceTeleRegFlag),"");
         final String deviceID = sp.getString(getString(R.string.deviceID),"");
         if(!regFlag.equals("Registered")){
-            dataController.categoryRegistration(this,R.string.deviceTeleRegFlag, deviceID, sp,"telemed", sensors);
+            dataController.categoryRegistration(this,R.string.deviceTeleRegFlag, deviceID, sp,category, sensors);
         }
         button.initializeTeleButton(this);
-        button.teleECG.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dataController.sendToServer("/server/"+deviceID+"/telemed/ECG",4,"{\"m2m:cin\":{\"con\":\"OFF\"}}","Cae_device"+deviceID);
-            }
-        });
+        dataController.buttonFunction(deviceID,category,button.teleECG,sensors[0]);
+        dataController.buttonFunction(deviceID,category,button.teleEMG,sensors[1]);
+        dataController.buttonFunction(deviceID,category,button.teleTemp,sensors[2]);
+        dataController.buttonFunction(deviceID,category,button.teleSugar,sensors[3]);
     }
 
     /*private void categoryRegistration(String deviceID){
