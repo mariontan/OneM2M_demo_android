@@ -9,7 +9,7 @@ public class ViewController {
     public Button start;
     public Button agriculture, aquaculture, telemed, smartHome, disaster;
     public Button dGPS;
-    public Button agrMoist;
+    public Button agrMoist,agrGas,agrHum,agrTemp;
     public Button aquaDO;
     public Button teleECG;
     public Button smrtTemp;
@@ -33,7 +33,10 @@ public class ViewController {
     }
 
     public void intializeAgriButton(Activity activity){
-        agrMoist = (Button) activity.findViewById(R.id.moist);
+        agrMoist = (Button) activity.findViewById(R.id.agrmoist);
+        agrGas = (Button) activity.findViewById(R.id.agrgas);
+        agrHum = (Button) activity.findViewById(R.id.agrhumidity);
+        agrTemp = (Button) activity.findViewById(R.id.agrtemp);
     }
 
     public void intializeAquaButton(Activity activity){

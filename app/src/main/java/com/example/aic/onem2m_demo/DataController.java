@@ -3,6 +3,8 @@ package com.example.aic.onem2m_demo;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
@@ -12,6 +14,8 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.List;
+import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 
 public class DataController {
@@ -21,6 +25,7 @@ public class DataController {
     //AE Params
     //private static final String origin = "Cae_device10";//Do not change Constant in oneM2M
     private static final int aePort = 3000;
+    private int i = 0;
     /****https://stackoverflow.com/questions/9148899/returning-value-from-thread***///return values from threads
     protected String sendToServer(final String location, final int ty, final String rep,final String origin){
         final CountDownLatch latch = new CountDownLatch(1);
@@ -80,14 +85,20 @@ public class DataController {
         }
     }
 
-    /*private void categoryRegistration(String deviceID){
-        SharedPreferences.Editor editor = sp.edit();
-        String msg = dataController.sendToServer("/server/"+deviceID,3,"{\"m2m:cnt\":{\"rn\":\"smarthome\"}}","Cae_device"+deviceID);
-        if(msg.equals("Created")){
-            dataController.sendToServer("/server/"+deviceID+"/smarthome",3,"{\"m2m:cnt\":{\"rn\":\"temp\"}}","Cae_device"+deviceID);
-            editor.putString(getString(R.string.deviceSmrtRegFlag),"Registered");
-            editor.commit();
-        }
-    }*/
+    protected void buttonFunction(final String deviceID, final String category, Button button, final String sensor){
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    sendToServer("/server/"+deviceID+"/"+category+"/"+sensor,4,"{\"m2m:cin\":{\"con\":\""+dataGen()+"\"}}","Cae_device"+deviceID);
+                }
+            });
+    }
+
+    private String dataGen(){
+        Random rand = new Random();
+        int n = rand.nextInt(40);
+        return String.valueOf(n);
+    }
+
 
 }

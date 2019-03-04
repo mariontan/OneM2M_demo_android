@@ -9,7 +9,26 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/moist"
+        android:id="@+id/agrmoist"
         android:text="Moisture"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/agrmoist"
+        android:id="@+id/agrgas"
+        android:text="gas"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/agrgas"
+        android:id="@+id/agrhumidity"
+        android:text="humidity"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/agrhumidity"
+        android:id="@+id/agrtemp"
+        android:text="temperature"/>
+
 
 </RelativeLayout>
