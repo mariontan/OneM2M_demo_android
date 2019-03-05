@@ -28,17 +28,9 @@ public class SmartHome extends AppCompatActivity {
             dataController.categoryRegistration(this,R.string.deviceSmrtRegFlag, deviceID,sp, category, sensors);
         }
         button.initializeSmrtButton(this);
-        dataController.buttonFunction(deviceID,category,button.smrtTemp,sensors[0]);
-        dataController.buttonFunction(deviceID,category,button.smrtHum,sensors[1]);
+        dataController.buttonFunction(deviceID,category,button.smrtTemp,sensors[0],sp);
+        dataController.buttonFunction(deviceID,category,button.smrtHum,sensors[1],sp);
     }
 
-    /*private void categoryRegistration(String deviceID){
-        SharedPreferences.Editor editor = sp.edit();
-        String msg = dataController.sendToServer("/server/"+deviceID,3,"{\"m2m:cnt\":{\"rn\":\"smarthome\"}}","Cae_device"+deviceID);
-        if(msg.equals("Created")){
-            dataController.sendToServer("/server/"+deviceID+"/smarthome",3,"{\"m2m:cnt\":{\"rn\":\"temp\"}}","Cae_device"+deviceID);
-            editor.putString(getString(R.string.deviceSmrtRegFlag),"Registered");
-            editor.commit();
-        }
-    }*/
+
 }

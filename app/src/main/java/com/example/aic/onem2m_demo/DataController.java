@@ -2,6 +2,7 @@ package com.example.aic.onem2m_demo;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -18,35 +19,38 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 
-public class DataController {
+public class DataController extends AppCompatActivity {
     //CSE Params
-    public static final String host = "http://192.168.20.187:8080";
-    //private static final String host = "http://acctechstaging.southeastasia.cloudapp.azure.com:8080";
+    //public static final String host = "http://192.168.20.187:8080";
+    private static final String host = "http://acctechstaging.southeastasia.cloudapp.azure.com:8080";
     /****https://stackoverflow.com/questions/9148899/returning-value-from-thread***///return values from threads
 
     protected void categoryRegistration(Activity activity,int id, String deviceID, SharedPreferences sp, String category, String[] sensors ){
+
         SharedPreferences.Editor editor = sp.edit();
-        String msg = sendToServer("/server/"+deviceID,3,"{\"m2m:cnt\":{\"rn\":\""+category+"\"}}","Cae_device"+deviceID);
+        String msg = sendToServer("/server/"+deviceID,3,"{\"m2m:cnt\":{\"rn\":\""+category+"\"}}","Cae_device"+deviceID,sp);
         if(msg.equals("Created")){
             for(String sensor: sensors){
-                sendToServer("/server/"+deviceID+"/"+category+"",3,"{\"m2m:cnt\":{\"rn\":\""+sensor+"\"}}","Cae_device"+deviceID);
+                sendToServer("/server/"+deviceID+"/"+category+"",3,"{\"m2m:cnt\":{\"rn\":\""+sensor+"\"}}","Cae_device"+deviceID,sp);
             }
             editor.putString(activity.getString(id),"Registered");
             editor.commit();
         }
     }
 
-    protected void buttonFunction(final String deviceID, final String category, Button button, final String sensor){
+    protected void buttonFunction(final String deviceID, final String category, Button button, final String sensor, final SharedPreferences sp){
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    sendToServer("/server/"+deviceID+"/"+category+"/"+sensor,4,"{\"m2m:cin\":{\"con\":\""+dataGen()+"\"}}","Cae_device"+deviceID);
+                    sendToServer("/server/"+deviceID+"/"+category+"/"+sensor,4,"{\"m2m:cin\":{\"con\":\""+dataGen()+"\"}}","Cae_device"+deviceID,sp);
                 }
             });
     }
-    protected String sendToServer(final String location, final int ty, final String rep,final String origin){
+    protected String sendToServer(final String location, final int ty, final String rep,final String origin, final SharedPreferences sp){
         final CountDownLatch latch = new CountDownLatch(1);
+        final String regFlag = "Registered";
         final String[] msg = new String[1];
+        msg[0] = "";
         new Thread(){
             public void run() {
                 URL url = null;
@@ -72,7 +76,11 @@ public class DataController {
                     out.close();
                     httpConn.connect();
                     msg[0] = httpConn.getResponseMessage();
-                    latch.countDown();
+
+                    if(!regFlag.equals("Registered")){
+                        latch.countDown();
+                    }
+                    Log.i("INFO", regFlag);
                     Log.i("INFO","connected: "+url.getHost());
                     Log.i("INFO","Response message " + httpConn.getResponseMessage());
                     Log.i("INFO", "Response Code " + String.valueOf(httpConn.getResponseCode()));
@@ -82,10 +90,12 @@ public class DataController {
                 }
             }
         }.start();
-        try {
-            latch.await();
-        }catch (Exception e){
-            Log.i("INFO", "Thread issue: " + e.getMessage());
+        if(!regFlag.equals("Registered")){
+            try {
+                latch.await();
+            }catch (Exception e){
+                Log.i("INFO", "Thread issue: " + e.getMessage());
+            }
         }
         return msg[0];
     }

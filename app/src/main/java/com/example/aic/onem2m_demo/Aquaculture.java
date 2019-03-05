@@ -23,19 +23,11 @@ public class Aquaculture extends AppCompatActivity {
             dataController.categoryRegistration(this,R.string.deviceAquaRegFlag, deviceID,sp, category, sensors);
         }
         button.intializeAquaButton(this);
-        dataController.buttonFunction(deviceID,category,button.aquaDO,sensors[0]);
-        dataController.buttonFunction(deviceID,category,button.aquaCon,sensors[1]);
-        dataController.buttonFunction(deviceID,category,button.aquaPH,sensors[2]);
-        dataController.buttonFunction(deviceID,category,button.aquaTemp,sensors[3]);
+        dataController.buttonFunction(deviceID,category,button.aquaDO,sensors[0],sp);
+        dataController.buttonFunction(deviceID,category,button.aquaCon,sensors[1],sp);
+        dataController.buttonFunction(deviceID,category,button.aquaPH,sensors[2],sp);
+        dataController.buttonFunction(deviceID,category,button.aquaTemp,sensors[3],sp);
     }
 
-    /*private void categoryRegistration(String deviceID){
-        SharedPreferences.Editor editor = sp.edit();
-        String msg = dataController.sendToServer("/server/"+deviceID,3,"{\"m2m:cnt\":{\"rn\":\"aquaculture\"}}","Cae_device"+deviceID);
-        if(msg.equals("Created")){
-            dataController.sendToServer("/server/"+deviceID+"/aquaculture",3,"{\"m2m:cnt\":{\"rn\":\"DO\"}}","Cae_device"+deviceID);
-            editor.putString(getString(R.string.deviceAquaRegFlag),"Registered");
-            editor.commit();
-        }
-    }*/
+
 }

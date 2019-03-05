@@ -24,19 +24,9 @@ public class Telemed extends AppCompatActivity {
             dataController.categoryRegistration(this,R.string.deviceTeleRegFlag, deviceID, sp,category, sensors);
         }
         button.initializeTeleButton(this);
-        dataController.buttonFunction(deviceID,category,button.teleECG,sensors[0]);
-        dataController.buttonFunction(deviceID,category,button.teleEMG,sensors[1]);
-        dataController.buttonFunction(deviceID,category,button.teleTemp,sensors[2]);
-        dataController.buttonFunction(deviceID,category,button.teleSugar,sensors[3]);
+        dataController.buttonFunction(deviceID,category,button.teleECG,sensors[0],sp);
+        dataController.buttonFunction(deviceID,category,button.teleEMG,sensors[1],sp);
+        dataController.buttonFunction(deviceID,category,button.teleTemp,sensors[2],sp);
+        dataController.buttonFunction(deviceID,category,button.teleSugar,sensors[3],sp);
     }
-
-    /*private void categoryRegistration(String deviceID){
-        SharedPreferences.Editor editor = sp.edit();
-        String msg = dataController.sendToServer("/server/"+deviceID,3,"{\"m2m:cnt\":{\"rn\":\"telemed\"}}","Cae_device"+deviceID);
-        if(msg.equals("Created")){
-            dataController.sendToServer("/server/"+deviceID+"/telemed",3,"{\"m2m:cnt\":{\"rn\":\"ECG\"}}","Cae_device"+deviceID);
-            editor.putString(getString(R.string.deviceTeleRegFlag),"Registered");
-            editor.commit();
-        }
-    }*/
 }
