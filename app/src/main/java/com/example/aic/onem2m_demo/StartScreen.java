@@ -21,10 +21,10 @@ public class StartScreen extends AppCompatActivity {
         elements.start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String regFlag = sp.getString(getString(R.string.deviceRegFlag),"");
-                if(!regFlag.equals("Registered")){
-                    setDeviceName();
-                }
+                //String regFlag = sp.getString(getString(R.string.deviceRegFlag),"");
+                //if(!regFlag.equals("Registered")){
+                setDeviceName();
+                //}
                 Intent intent = new Intent(StartScreen.this,MainActivity.class);
                 startActivity(intent);
             }
