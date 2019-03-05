@@ -24,9 +24,9 @@ public class Telemed extends AppCompatActivity {
             dataController.categoryRegistration(this,R.string.deviceTeleRegFlag, deviceID, sp,category, sensors);
         }
         button.initializeTeleButton(this);
-        dataController.buttonFunction(deviceID,category,button.teleECG,sensors[0],sp);
-        dataController.buttonFunction(deviceID,category,button.teleEMG,sensors[1],sp);
-        dataController.buttonFunction(deviceID,category,button.teleTemp,sensors[2],sp);
-        dataController.buttonFunction(deviceID,category,button.teleSugar,sensors[3],sp);
+        dataController.buttonFunction(deviceID,category,button.teleECG,sensors[0],sp,regFlag);
+        dataController.buttonFunction(deviceID,category,button.teleEMG,sensors[1],sp,regFlag);
+        dataController.buttonFunction(deviceID,category,button.teleTemp,sensors[2],sp,regFlag);
+        dataController.buttonFunction(deviceID,category,button.teleSugar,sensors[3],sp,regFlag);
     }
 }

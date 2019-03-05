@@ -25,9 +25,9 @@ public class Disaster extends AppCompatActivity {
             dataController.categoryRegistration(this,R.string.deviceDisasterRegFlag,deviceID, sp, "disaster", sensors);
         }
         button.initializeDisasterButton(this);
-        dataController.buttonFunction(deviceID,category,button.dGPS,sensors[0],sp);
-        dataController.buttonFunction(deviceID,category,button.dGas,sensors[1],sp);
-        dataController.buttonFunction(deviceID,category,button.dRad,sensors[2],sp);
+        dataController.buttonFunction(deviceID,category,button.dGPS,sensors[0],sp,regFlag);
+        dataController.buttonFunction(deviceID,category,button.dGas,sensors[1],sp,regFlag);
+        dataController.buttonFunction(deviceID,category,button.dRad,sensors[2],sp,regFlag);
     }
 }
 

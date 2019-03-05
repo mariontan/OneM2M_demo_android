@@ -28,8 +28,8 @@ public class SmartHome extends AppCompatActivity {
             dataController.categoryRegistration(this,R.string.deviceSmrtRegFlag, deviceID,sp, category, sensors);
         }
         button.initializeSmrtButton(this);
-        dataController.buttonFunction(deviceID,category,button.smrtTemp,sensors[0],sp);
-        dataController.buttonFunction(deviceID,category,button.smrtHum,sensors[1],sp);
+        dataController.buttonFunction(deviceID,category,button.smrtTemp,sensors[0],sp,regFlag);
+        dataController.buttonFunction(deviceID,category,button.smrtHum,sensors[1],sp,regFlag);
     }
 
 

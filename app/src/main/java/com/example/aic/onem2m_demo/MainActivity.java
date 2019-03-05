@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         String msg = "";
         DataController dataController = new DataController();
         if(!regFlag.equals("Registered")){
-            msg = dataController.sendToServer("/server",2,"{\"m2m:ae\":{\"rn\":\""+deviceID+"\",\"api\":\""+deviceID+".company.com\",\"rr\":\"true\",\"poa\":[\"http://"+Utils.getIPAddress(true)+":80\"]}}","Cae_"+deviceID,sp);
+            msg = dataController.sendToServer("/server",2,"{\"m2m:ae\":{\"rn\":\""+deviceID+"\",\"api\":\""+deviceID+".company.com\",\"rr\":\"true\",\"poa\":[\"http://"+Utils.getIPAddress(true)+":80\"]}}","Cae_"+deviceID,sp,regFlag);
         }
 
         SharedPreferences.Editor editor = sp.edit();

@@ -26,29 +26,29 @@ public class DataController extends AppCompatActivity {
     /****https://stackoverflow.com/questions/9148899/returning-value-from-thread***///return values from threads
 
     protected void categoryRegistration(Activity activity,int id, String deviceID, SharedPreferences sp, String category, String[] sensors ){
-
+        String filler = "";
         SharedPreferences.Editor editor = sp.edit();
-        String msg = sendToServer("/server/"+deviceID,3,"{\"m2m:cnt\":{\"rn\":\""+category+"\"}}","Cae_device"+deviceID,sp);
+        String msg = sendToServer("/server/"+deviceID,3,"{\"m2m:cnt\":{\"rn\":\""+category+"\"}}","Cae_device"+deviceID,sp,filler);
         if(msg.equals("Created")){
             for(String sensor: sensors){
-                sendToServer("/server/"+deviceID+"/"+category+"",3,"{\"m2m:cnt\":{\"rn\":\""+sensor+"\"}}","Cae_device"+deviceID,sp);
+                sendToServer("/server/"+deviceID+"/"+category+"",3,"{\"m2m:cnt\":{\"rn\":\""+sensor+"\"}}","Cae_device"+deviceID,sp,filler);
             }
             editor.putString(activity.getString(id),"Registered");
             editor.commit();
         }
     }
 
-    protected void buttonFunction(final String deviceID, final String category, Button button, final String sensor, final SharedPreferences sp){
+    protected void buttonFunction(final String deviceID, final String category, Button button, final String sensor, final SharedPreferences sp, final String regFlag){
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    sendToServer("/server/"+deviceID+"/"+category+"/"+sensor,4,"{\"m2m:cin\":{\"con\":\""+dataGen()+"\"}}","Cae_device"+deviceID,sp);
+                    sendToServer("/server/"+deviceID+"/"+category+"/"+sensor,4,"{\"m2m:cin\":{\"con\":\""+dataGen()+"\"}}","Cae_device"+deviceID,sp,regFlag);
                 }
             });
     }
-    protected String sendToServer(final String location, final int ty, final String rep,final String origin, final SharedPreferences sp){
+    protected String sendToServer(final String location, final int ty, final String rep,final String origin, final SharedPreferences sp, final String regFlag){
         final CountDownLatch latch = new CountDownLatch(1);
-        final String regFlag = "Registered";
+        //final String regFlag = "Registered";
         final String[] msg = new String[1];
         msg[0] = "";
         new Thread(){

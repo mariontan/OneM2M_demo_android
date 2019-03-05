@@ -29,9 +29,9 @@ public class Agriculture extends AppCompatActivity {
             dataController.categoryRegistration(this,R.string.deviceAgriRegFlag, deviceID, sp,category, sensors);
         }
         button.intializeAgriButton(this);
-        dataController.buttonFunction(deviceID,category,button.agrMoist,sensors[0],sp);
-        dataController.buttonFunction(deviceID,category,button.agrGas,sensors[1],sp);
-        dataController.buttonFunction(deviceID,category,button.agrHum,sensors[2],sp);
-        dataController.buttonFunction(deviceID,category,button.agrTemp,sensors[3],sp);
+        dataController.buttonFunction(deviceID,category,button.agrMoist,sensors[0],sp,regFlag);
+        dataController.buttonFunction(deviceID,category,button.agrGas,sensors[1],sp,regFlag);
+        dataController.buttonFunction(deviceID,category,button.agrHum,sensors[2],sp,regFlag);
+        dataController.buttonFunction(deviceID,category,button.agrTemp,sensors[3],sp,regFlag);
     }
 }

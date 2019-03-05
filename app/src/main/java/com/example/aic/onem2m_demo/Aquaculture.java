@@ -23,10 +23,10 @@ public class Aquaculture extends AppCompatActivity {
             dataController.categoryRegistration(this,R.string.deviceAquaRegFlag, deviceID,sp, category, sensors);
         }
         button.intializeAquaButton(this);
-        dataController.buttonFunction(deviceID,category,button.aquaDO,sensors[0],sp);
-        dataController.buttonFunction(deviceID,category,button.aquaCon,sensors[1],sp);
-        dataController.buttonFunction(deviceID,category,button.aquaPH,sensors[2],sp);
-        dataController.buttonFunction(deviceID,category,button.aquaTemp,sensors[3],sp);
+        dataController.buttonFunction(deviceID,category,button.aquaDO,sensors[0],sp,regFlag);
+        dataController.buttonFunction(deviceID,category,button.aquaCon,sensors[1],sp,regFlag);
+        dataController.buttonFunction(deviceID,category,button.aquaPH,sensors[2],sp,regFlag);
+        dataController.buttonFunction(deviceID,category,button.aquaTemp,sensors[3],sp,regFlag);
     }
 
 
