@@ -2,6 +2,7 @@ package com.example.aic.onem2m_demo;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -28,10 +29,10 @@ public class DataController extends AppCompatActivity {
     protected void categoryRegistration(Activity activity,int id, String deviceID, SharedPreferences sp, String category, String[] sensors ){
         String filler = "";
         SharedPreferences.Editor editor = sp.edit();
-        String msg = sendToServer("/server/"+deviceID,3,"{\"m2m:cnt\":{\"rn\":\""+category+"\"}}","Cae_device"+deviceID,sp,filler);
+        String msg = sendToServer("/server/"+deviceID,"3","{\"m2m:cnt\":{\"rn\":\""+category+"\"}}","Cae_device"+deviceID,sp,filler);
         if(msg.equals("Created")){
             for(String sensor: sensors){
-                sendToServer("/server/"+deviceID+"/"+category+"",3,"{\"m2m:cnt\":{\"rn\":\""+sensor+"\"}}","Cae_device"+deviceID,sp,filler);
+                sendToServer("/server/"+deviceID+"/"+category+"","3","{\"m2m:cnt\":{\"rn\":\""+sensor+"\"}}","Cae_device"+deviceID,sp,filler);
             }
             editor.putString(activity.getString(id),"Registered");
             editor.commit();
@@ -42,69 +43,135 @@ public class DataController extends AppCompatActivity {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    sendToServer("/server/"+deviceID+"/"+category+"/"+sensor,4,"{\"m2m:cin\":{\"con\":\""+dataGen()+"\"}}","Cae_device"+deviceID,sp,regFlag);
+                    sendToServer("/server/"+deviceID+"/"+category+"/"+sensor,"4","{\"m2m:cin\":{\"con\":\""+dataGen()+"\"}}","Cae_device"+deviceID,sp,regFlag);
                 }
             });
     }
 
-    protected String sendToServer(final String location, final int ty, final String rep,final String origin, final SharedPreferences sp, final String regFlag){
+//    protected String sendToServer(final String location, final int ty, final String rep,final String origin, final SharedPreferences sp, final String regFlag){
+//        final CountDownLatch latch = new CountDownLatch(1);
+//        //final String regFlag = "Registered";
+//        final String[] msg = new String[1];
+//        msg[0] = "";
+//        new Thread(){
+//            public void run() {
+//                URL url = null;
+//                try{
+//                    url = new URL(host+location);
+//                    URLConnection urlConn = url.openConnection();
+//
+//                    if (!(urlConn instanceof HttpURLConnection)) {
+//                        throw new IOException("URL is not an Http URL");
+//                    }
+//                    HttpURLConnection httpConn = (HttpURLConnection) urlConn;
+//                    httpConn.setRequestMethod("POST");
+//                    httpConn.setRequestProperty("X-M2M-Origin", origin);
+//                    httpConn.setRequestProperty("Content-Type", "application/json;ty="+String.valueOf(ty));
+//                    httpConn.setDoOutput(true);
+//                    httpConn.setChunkedStreamingMode(0);
+//                    //sending to server
+//                    OutputStream out = new BufferedOutputStream(httpConn.getOutputStream());
+//                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
+//                    writer.write(rep);
+//                    writer.flush();
+//                    writer.close();
+//                    out.close();
+//                    httpConn.connect();
+//                    msg[0] = httpConn.getResponseMessage();
+//                    if(!regFlag.equals("Registered")){
+//                        latch.countDown();
+//                    }
+//                    Log.i("INFO", regFlag);
+//                    Log.i("INFO","connected: "+url.getHost());
+//                    Log.i("INFO","Response message " + httpConn.getResponseMessage());
+//                    Log.i("INFO", "Response Code " + String.valueOf(httpConn.getResponseCode()));
+//                    httpConn.disconnect();
+//                }catch(Exception e){
+//                    Log.i("INFO","Connection failed: " +url +" "+ e.getMessage());
+//                }
+//            }
+//        }.start();
+//        if(!regFlag.equals("Registered")){
+//            try {
+//                latch.await();
+//            }catch (Exception e){
+//                Log.i("INFO", "Thread issue: " + e.getMessage());
+//            }
+//        }
+//        return msg[0];
+//    }
+
+    protected String sendToServer(final String location, final String ty, final String rep,final String origin, final SharedPreferences sp, final String regFlag){
         final CountDownLatch latch = new CountDownLatch(1);
         //final String regFlag = "Registered";
         final String[] msg = new String[1];
         msg[0] = "";
-        new Thread(){
-            public void run() {
-                URL url = null;
-                try{
-                    url = new URL(host+location);
-                    URLConnection urlConn = url.openConnection();
-
-                    if (!(urlConn instanceof HttpURLConnection)) {
-                        throw new IOException("URL is not an Http URL");
-                    }
-                    HttpURLConnection httpConn = (HttpURLConnection) urlConn;
-                    httpConn.setRequestMethod("POST");
-                    httpConn.setRequestProperty("X-M2M-Origin", origin);
-                    httpConn.setRequestProperty("Content-Type", "application/json;ty="+String.valueOf(ty));
-                    httpConn.setDoOutput(true);
-                    httpConn.setChunkedStreamingMode(0);
-                    //sending to server
-                    OutputStream out = new BufferedOutputStream(httpConn.getOutputStream());
-                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
-                    writer.write(rep);
-                    writer.flush();
-                    writer.close();
-                    out.close();
-                    httpConn.connect();
-                    msg[0] = httpConn.getResponseMessage();
-                    if(!regFlag.equals("Registered")){
-                        latch.countDown();
-                    }
-                    Log.i("INFO", regFlag);
-                    Log.i("INFO","connected: "+url.getHost());
-                    Log.i("INFO","Response message " + httpConn.getResponseMessage());
-                    Log.i("INFO", "Response Code " + String.valueOf(httpConn.getResponseCode()));
-                    httpConn.disconnect();
-                }catch(Exception e){
-                    Log.i("INFO","Connection failed: " +url +" "+ e.getMessage());
-                }
-            }
-        }.start();
-        if(!regFlag.equals("Registered")){
-            try {
-                latch.await();
-            }catch (Exception e){
-                Log.i("INFO", "Thread issue: " + e.getMessage());
-            }
-        }
-        return msg[0];
+        HTTPTask httpTask = new HTTPTask(location, ty, rep, origin,regFlag);
+        httpTask.execute();
+        return "Registered";
+//        new Thread(){
+//            public void run() {
+//
+//            }
+//        }.start();
+//        if(!regFlag.equals("Registered")){
+//            try {
+//                latch.await();
+//            }catch (Exception e){
+//                Log.i("INFO", "Thread issue: " + e.getMessage());
+//            }
+//        }
+//        return msg[0];
     }
-
     private String dataGen(){
         Random rand = new Random();
         int n = rand.nextInt(40);
         return String.valueOf(n);
     }
 
+    private class HTTPTask extends AsyncTask<String, String, String>{
+        String location, ty, rep, origin, regFlag;
+        HTTPTask(String location, String ty, String rep, String origin, String regFlag){
+            this.location = location;
+            this.ty = ty;
+            this.rep = rep;
+            this.origin = origin;
+            this.regFlag= regFlag;
+        }
+        @Override
+        protected String doInBackground(String... strings) {
+            URL url = null;
+            try{
+                url = new URL(host+location);
+                URLConnection urlConn = url.openConnection();
 
+                if (!(urlConn instanceof HttpURLConnection)) {
+                    throw new IOException("URL is not an Http URL");
+                }
+                HttpURLConnection httpConn = (HttpURLConnection) urlConn;
+                httpConn.setRequestMethod("POST");
+                httpConn.setRequestProperty("X-M2M-Origin", origin);
+                httpConn.setRequestProperty("Content-Type", "application/json;ty="+String.valueOf(ty));
+                httpConn.setDoOutput(true);
+                httpConn.setChunkedStreamingMode(0);
+                //sending to server
+                OutputStream out = new BufferedOutputStream(httpConn.getOutputStream());
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
+                writer.write(rep);
+                writer.flush();
+                writer.close();
+                out.close();
+                httpConn.connect();
+                Log.i("INFO", regFlag);
+                Log.i("INFO","connected: "+url.getHost());
+                Log.i("INFO","Response message " + httpConn.getResponseMessage());
+                Log.i("INFO", "Response Code " + String.valueOf(httpConn.getResponseCode()));
+                httpConn.disconnect();
+                return httpConn.getResponseMessage();
+            }catch(Exception e){
+                Log.i("INFO","Connection failed: " +url +" "+ e.getMessage());
+                return "HTTPTask error";
+            }
+        }
+    }
 }
