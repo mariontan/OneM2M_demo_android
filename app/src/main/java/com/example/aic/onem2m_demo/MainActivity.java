@@ -93,9 +93,8 @@ public class MainActivity extends AppCompatActivity {
         if(!regFlag.equals("Registered")){
             msg = dataController.sendToServer("/server","2","{\"m2m:ae\":{\"rn\":\""+deviceID+"\",\"api\":\""+deviceID+".company.com\",\"rr\":\"true\",\"poa\":[\"http://"+Utils.getIPAddress(true)+":80\"]}}","Cae_"+deviceID,sp,regFlag);
         }
-
         SharedPreferences.Editor editor = sp.edit();
-        if(msg.equals("Created")){
+        if(msg!=null&&msg.equals("Created")){
             editor.putString(getString(R.string.deviceRegFlag),"Registered");
             editor.commit();
         }

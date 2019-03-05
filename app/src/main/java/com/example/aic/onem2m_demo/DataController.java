@@ -22,21 +22,21 @@ import java.util.concurrent.CountDownLatch;
 
 public class DataController extends AppCompatActivity {
     //CSE Params
-    //public static final String host = "http://192.168.20.187:8080";
-    private static final String host = "http://acctechstaging.southeastasia.cloudapp.azure.com:8080";
+    public static final String host = "http://192.168.20.187:8080";
+    //private static final String host = "http://acctechstaging.southeastasia.cloudapp.azure.com:8080";
     /****https://stackoverflow.com/questions/9148899/returning-value-from-thread***///return values from threads
 
     protected void categoryRegistration(Activity activity,int id, String deviceID, SharedPreferences sp, String category, String[] sensors ){
         String filler = "";
         SharedPreferences.Editor editor = sp.edit();
         String msg = sendToServer("/server/"+deviceID,"3","{\"m2m:cnt\":{\"rn\":\""+category+"\"}}","Cae_device"+deviceID,sp,filler);
-        if(msg.equals("Created")){
-            for(String sensor: sensors){
-                sendToServer("/server/"+deviceID+"/"+category+"","3","{\"m2m:cnt\":{\"rn\":\""+sensor+"\"}}","Cae_device"+deviceID,sp,filler);
-            }
-            editor.putString(activity.getString(id),"Registered");
-            editor.commit();
+        //if(msg!=null&&msg.equals("Created")){
+        for(String sensor: sensors){
+            sendToServer("/server/"+deviceID+"/"+category+"","3","{\"m2m:cnt\":{\"rn\":\""+sensor+"\"}}","Cae_device"+deviceID,sp,filler);
         }
+        editor.putString(activity.getString(id),"Registered");
+        editor.commit();
+        //}
     }
 
     protected void buttonFunction(final String deviceID, final String category, Button button, final String sensor, final SharedPreferences sp, final String regFlag){
@@ -108,7 +108,11 @@ public class DataController extends AppCompatActivity {
         msg[0] = "";
         HTTPTask httpTask = new HTTPTask(location, ty, rep, origin,regFlag);
         httpTask.execute();
-        return "Registered";
+        String result = httpTask.res;
+        /*if(result.equals(null)){
+            result = "";
+        }*/
+        return result;
 //        new Thread(){
 //            public void run() {
 //
@@ -130,7 +134,7 @@ public class DataController extends AppCompatActivity {
     }
 
     private class HTTPTask extends AsyncTask<String, String, String>{
-        String location, ty, rep, origin, regFlag;
+        String location, ty, rep, origin, regFlag,res;
         HTTPTask(String location, String ty, String rep, String origin, String regFlag){
             this.location = location;
             this.ty = ty;
@@ -167,11 +171,12 @@ public class DataController extends AppCompatActivity {
                 Log.i("INFO","Response message " + httpConn.getResponseMessage());
                 Log.i("INFO", "Response Code " + String.valueOf(httpConn.getResponseCode()));
                 httpConn.disconnect();
-                return httpConn.getResponseMessage();
+                res = httpConn.getResponseMessage();
             }catch(Exception e){
                 Log.i("INFO","Connection failed: " +url +" "+ e.getMessage());
-                return "HTTPTask error";
+                res = "HTTPTask error";
             }
+            return res;
         }
     }
 }
