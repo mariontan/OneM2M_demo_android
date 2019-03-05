@@ -88,13 +88,10 @@ public class MainActivity extends AppCompatActivity {
     private void RegisterDevice(){
         String deviceID = sp.getString(getString(R.string.deviceID),"");
         String regFlag = sp.getString(getString(R.string.deviceRegFlag),"");
-        String msg = "";
         DataController dataController = new DataController();
         if(!regFlag.equals("Registered")){
-            msg = dataController.sendToServer("/server","2","{\"m2m:ae\":{\"rn\":\""+deviceID+"\",\"api\":\""+deviceID+".company.com\",\"rr\":\"true\",\"poa\":[\"http://"+Utils.getIPAddress(true)+":80\"]}}","Cae_"+deviceID,sp,regFlag);
-        }
-        SharedPreferences.Editor editor = sp.edit();
-        if(msg!=null&&msg.equals("Created")){
+            dataController.sendToServer("/server","2","{\"m2m:ae\":{\"rn\":\""+deviceID+"\",\"api\":\""+deviceID+".company.com\",\"rr\":\"true\",\"poa\":[\"http://"+Utils.getIPAddress(true)+":80\"]}}","Cae_"+deviceID,sp,regFlag);
+            SharedPreferences.Editor editor = sp.edit();
             editor.putString(getString(R.string.deviceRegFlag),"Registered");
             editor.commit();
         }
