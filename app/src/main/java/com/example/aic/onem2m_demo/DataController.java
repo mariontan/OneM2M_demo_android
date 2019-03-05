@@ -29,14 +29,12 @@ public class DataController extends AppCompatActivity {
     protected void categoryRegistration(Activity activity,int id, String deviceID, SharedPreferences sp, String category, String[] sensors ){
         String filler = "";
         SharedPreferences.Editor editor = sp.edit();
-        String msg = sendToServer("/server/"+deviceID,"3","{\"m2m:cnt\":{\"rn\":\""+category+"\"}}","Cae_device"+deviceID,sp,filler);
-        //if(msg!=null&&msg.equals("Created")){
+        sendToServer("/server/"+deviceID,"3","{\"m2m:cnt\":{\"rn\":\""+category+"\"}}","Cae_device"+deviceID,sp,filler);
         for(String sensor: sensors){
             sendToServer("/server/"+deviceID+"/"+category+"","3","{\"m2m:cnt\":{\"rn\":\""+sensor+"\"}}","Cae_device"+deviceID,sp,filler);
         }
         editor.putString(activity.getString(id),"Registered");
         editor.commit();
-        //}
     }
 
     protected void buttonFunction(final String deviceID, final String category, Button button, final String sensor, final SharedPreferences sp, final String regFlag){
@@ -48,84 +46,11 @@ public class DataController extends AppCompatActivity {
             });
     }
 
-//    protected String sendToServer(final String location, final int ty, final String rep,final String origin, final SharedPreferences sp, final String regFlag){
-//        final CountDownLatch latch = new CountDownLatch(1);
-//        //final String regFlag = "Registered";
-//        final String[] msg = new String[1];
-//        msg[0] = "";
-//        new Thread(){
-//            public void run() {
-//                URL url = null;
-//                try{
-//                    url = new URL(host+location);
-//                    URLConnection urlConn = url.openConnection();
-//
-//                    if (!(urlConn instanceof HttpURLConnection)) {
-//                        throw new IOException("URL is not an Http URL");
-//                    }
-//                    HttpURLConnection httpConn = (HttpURLConnection) urlConn;
-//                    httpConn.setRequestMethod("POST");
-//                    httpConn.setRequestProperty("X-M2M-Origin", origin);
-//                    httpConn.setRequestProperty("Content-Type", "application/json;ty="+String.valueOf(ty));
-//                    httpConn.setDoOutput(true);
-//                    httpConn.setChunkedStreamingMode(0);
-//                    //sending to server
-//                    OutputStream out = new BufferedOutputStream(httpConn.getOutputStream());
-//                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
-//                    writer.write(rep);
-//                    writer.flush();
-//                    writer.close();
-//                    out.close();
-//                    httpConn.connect();
-//                    msg[0] = httpConn.getResponseMessage();
-//                    if(!regFlag.equals("Registered")){
-//                        latch.countDown();
-//                    }
-//                    Log.i("INFO", regFlag);
-//                    Log.i("INFO","connected: "+url.getHost());
-//                    Log.i("INFO","Response message " + httpConn.getResponseMessage());
-//                    Log.i("INFO", "Response Code " + String.valueOf(httpConn.getResponseCode()));
-//                    httpConn.disconnect();
-//                }catch(Exception e){
-//                    Log.i("INFO","Connection failed: " +url +" "+ e.getMessage());
-//                }
-//            }
-//        }.start();
-//        if(!regFlag.equals("Registered")){
-//            try {
-//                latch.await();
-//            }catch (Exception e){
-//                Log.i("INFO", "Thread issue: " + e.getMessage());
-//            }
-//        }
-//        return msg[0];
-//    }
-
     protected String sendToServer(final String location, final String ty, final String rep,final String origin, final SharedPreferences sp, final String regFlag){
-        final CountDownLatch latch = new CountDownLatch(1);
-        //final String regFlag = "Registered";
-        final String[] msg = new String[1];
-        msg[0] = "";
         HTTPTask httpTask = new HTTPTask(location, ty, rep, origin,regFlag);
         httpTask.execute();
         String result = httpTask.res;
-        /*if(result.equals(null)){
-            result = "";
-        }*/
         return result;
-//        new Thread(){
-//            public void run() {
-//
-//            }
-//        }.start();
-//        if(!regFlag.equals("Registered")){
-//            try {
-//                latch.await();
-//            }catch (Exception e){
-//                Log.i("INFO", "Thread issue: " + e.getMessage());
-//            }
-//        }
-//        return msg[0];
     }
     private String dataGen(){
         Random rand = new Random();
