@@ -46,6 +46,7 @@ public class DataController extends AppCompatActivity {
                 }
             });
     }
+
     protected String sendToServer(final String location, final int ty, final String rep,final String origin, final SharedPreferences sp, final String regFlag){
         final CountDownLatch latch = new CountDownLatch(1);
         //final String regFlag = "Registered";
@@ -76,7 +77,6 @@ public class DataController extends AppCompatActivity {
                     out.close();
                     httpConn.connect();
                     msg[0] = httpConn.getResponseMessage();
-
                     if(!regFlag.equals("Registered")){
                         latch.countDown();
                     }
